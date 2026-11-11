@@ -26,6 +26,7 @@ function scatter() {
     img.src = `${folder}${name}.webp`;
     img.alt = '';
     img.className = 'sprite';
+    img.draggable = false;
     img.style.cssText = `left:${(-w * 0.2 + Math.random() * (width - w * 0.6)).toFixed(0)}px;width:${w.toFixed(0)}px;` +
       `--i:${items.length};--t:${(3.5 + Math.random() * 4).toFixed(1)}s;--d:${(-Math.random() * 6).toFixed(1)}s;` +
       `--b:${(Math.random() < 0.5 ? -1 : 1) * (4 + Math.random() * 6) | 0}px`;
@@ -60,12 +61,35 @@ function move() {
   requestAnimationFrame(() => { queued = false; place(); });
 }
 addEventListener('scroll', move, { passive: true });
-// Where there is nothing to scroll (the shelf on a wide screen), the wheel still stirs the collage.
-addEventListener('wheel', e => {
-  if (document.documentElement.scrollHeight > innerHeight + 1) return;
-  nudge += e.deltaY;
-  move();
-}, { passive: true });
+// The shelf does not scroll, so there a swipe (or the wheel) stirs the collage itself,
+// and it glides on for a moment after the finger lifts.
+if ('stir' in wall.dataset) {
+  let last = null, speed = 0, gliding = 0;
+  const glide = () => {
+    nudge += speed;
+    speed *= 0.94;
+    place();
+    gliding = Math.abs(speed) > 0.3 ? requestAnimationFrame(glide) : 0;
+  };
+  addEventListener('pointerdown', e => {
+    cancelAnimationFrame(gliding);
+    last = e.clientY;
+    speed = 0;
+  });
+  addEventListener('pointermove', e => {
+    if (last === null) return;
+    speed = last - e.clientY;
+    nudge += speed;
+    last = e.clientY;
+    move();
+  });
+  for (const type of ['pointerup', 'pointercancel']) addEventListener(type, () => {
+    if (last === null) return;
+    last = null;
+    if (!calm.matches) gliding = requestAnimationFrame(glide);
+  });
+  addEventListener('wheel', e => { nudge += e.deltaY; move(); }, { passive: true });
+}
 
 // A tap you can feel. iPhones have no vibration for web pages, but flipping a switch gives a small
 // tick (iOS 18 and later), so flip a hidden one. Other phones vibrate for a moment.
