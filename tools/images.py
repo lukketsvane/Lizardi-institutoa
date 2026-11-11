@@ -11,7 +11,7 @@ Expected layout of the originals folder (PNG exports):
 
 Writes assets/book, assets/diary, assets/sprites and assets/meta.json
 (sizes, edge colours and tiny inline previews that tools/build.py needs),
-plus the app icons, favicon.ico and the link-preview image. Existing, up-to-date
+plus the app icons, favicon.ico, the iPhone launch screens and the link-preview image. Existing, up-to-date
 outputs are skipped. Needs Pillow >= 11.3 (pip install pillow).
 """
 import base64
@@ -29,6 +29,11 @@ PAGE_AVIF_WIDTHS = (800, 1200, 1600)  # 2x phones and plain desktops, 3x phones,
 PAGE_WEBP_WIDTH = 1000  # fallback for browsers without AVIF
 PAGE_THUMB_WIDTH = 240  # chapter picker
 ICON_SPRITE, ICON_COLOUR = "lizard-stretching", "#8d76ad"  # Lizarda, on the lilac of her wall
+SHELF_COLOUR = "#9da94a"  # the shelf's background (--garden in assets/site.css)
+# iPhone screens as width, height and pixel ratio: SE/8, 8 Plus, X/11 Pro/mini, XR/11, XS Max/11 Pro Max,
+# 12-14, 12-14 Pro Max/Plus, 14 Pro-16, 14 Pro Max-16 Plus, 16 Pro/17, 16-17 Pro Max, Air.
+IPHONES = [(375, 667, 2), (414, 736, 3), (375, 812, 3), (414, 896, 2), (414, 896, 3), (390, 844, 3), (428, 926, 3),
+           (393, 852, 3), (430, 932, 3), (402, 874, 3), (440, 956, 3), (420, 912, 3)]
 
 
 def stale(src, out):
@@ -137,6 +142,19 @@ def icons(sprite_dir):
     print("icons")
 
 
+def launch_screens(meta):
+    """What an installed app shows while it starts: just the shelf's colour, so the shelf seems to
+    be there at once and the drawings arrive on it. One picture per iPhone screen size."""
+    out_dir = ASSETS / "splash"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    for w, h, ratio in IPHONES:
+        out = out_dir / f"{w}x{h}-{ratio}x.png"
+        if not out.exists():
+            Image.new("RGB", (w * ratio, h * ratio), SHELF_COLOUR).save(out, optimize=True)
+    meta["splash"] = IPHONES
+    print("launch screens")
+
+
 def link_preview(cover):
     """The picture shown when the address is shared: the title on the front cover."""
     im = Image.open(cover).convert("RGB")
@@ -159,6 +177,7 @@ def main():
         icons(originals / "sprites")
     if (originals / "book" / "01.png").exists():
         link_preview(originals / "book" / "01.png")
+    launch_screens(meta)
     meta_path.write_text(json.dumps(meta, indent=1, sort_keys=True) + "\n")
 
 

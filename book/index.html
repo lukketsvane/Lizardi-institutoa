@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Lizarda and the World Within · Lizardi Institutoa</title>
 <meta name="description" content="Deep in the forest, there’s a little house. It belongs to a curious scientist – a poop scientist! And from a hole in the garden wall, something small is peeking out…">
 <meta name="theme-color" content="#c48c33">
@@ -13,13 +13,29 @@
 <link rel="icon" href="../favicon.ico" sizes="48x48">
 <link rel="icon" type="image/png" sizes="192x192" href="../assets/icons/icon-192.png">
 <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+<link rel="apple-touch-startup-image" href="../assets/splash/375x667-2x.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="../assets/splash/414x736-3x.png" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="../assets/splash/375x812-3x.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="../assets/splash/414x896-2x.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="../assets/splash/414x896-3x.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="../assets/splash/390x844-3x.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="../assets/splash/428x926-3x.png" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="../assets/splash/393x852-3x.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="../assets/splash/430x932-3x.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="../assets/splash/402x874-3x.png" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="../assets/splash/440x956-3x.png" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="../assets/splash/420x912-3x.png" media="(device-width: 420px) and (device-height: 912px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Lizarda and the World Within · Lizardi Institutoa">
 <meta property="og:description" content="Deep in the forest, there’s a little house. It belongs to a curious scientist – a poop scientist! And from a hole in the garden wall, something small is peeking out…">
 <meta property="og:image" content="https://lizardi-institutoa.iverfinne.no/assets/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="../assets/site.css?v=958076eeec">
-<script>if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("../sw.js"));</script>
+<link rel="stylesheet" href="../assets/site.css?v=79a3ebc142">
+<script>
+if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("../sw.js"));
+addEventListener("gesturestart", event => event.preventDefault()); // no pinch-zoom in Safari: it is an app
+addEventListener("touchstart", () => {}, {passive: true}); // lets iOS show the pressed look of things
+</script>
 </head>
 <body class="reader">
 <h1 class="vh">Lizarda and the World Within</h1>
@@ -46,14 +62,15 @@
 <div class="spread" id="20" style="--l:#d39866;--r:#cb8965"><img src="../assets/book/20-1280.webp" srcset="../assets/book/20-1280.webp 1280w, ../assets/book/20-2400.webp 2400w" sizes="(max-aspect-ratio: 1/1) 200vw, min(100vw, 142vh)" width="2576" height="1820" alt="Left page: Close-up of the scientist&#x27;s face in profile with red glasses, resting a hand on a sheet of crayon drawings. Right page: A cream sheet of paper covered in crayon sketches of Lizarda, a spider and various microbes in pastel colours. “To learn more about Lizarda&#x27;s life, and the microbes inside her!”" loading="lazy" decoding="async" style="background:url(data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAADQAwCdASoUAA4APu1iqk2ppaQiMAgBMB2JagCdMoAChtPcAyb9eEAAqPAC7Tun7LqlX9dVuFfNfWaGnQ1Vwy1jH6FII2FuU2HBp++8nw5qOB8ARjjT4knTpnWXAAAA) 0 0/100% 100%"><i></i><i></i></div>
 <div class="spread" id="21" style="--l:#7f7199;--r:#962678"><img src="../assets/book/21-1280.webp" srcset="../assets/book/21-1280.webp 1280w, ../assets/book/21-2400.webp 2400w" sizes="(max-aspect-ratio: 1/1) 200vw, min(100vw, 142vh)" width="2576" height="1820" alt="Left page: Lizarda sleeps curled up among autumn leaves in a pink nightcap, and a tiny creature in a pink cap sleeps below. “And while the poop scientist studies Lizarda’s poop, Lizarda sleeps.” Right page: Inside her gut, shown as a magenta space, cheerful colourful microbes of many shapes float about, two of them high-fiving. “In her gut, the microbes are hard at work to make more poop for the next day!”" loading="lazy" decoding="async" style="background:url(data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAADQAwCdASoUAA4APu1iqU2ppaOiMAgBMB2JbACdABUHxWPjB2DCbnAA6OSFnKDpaCVsZ6BROkfmEI9b2gQYOjimcnHfgKIscPHCuaUnMlIQO68Xl7lHtqqPQ4qY4+Vv6GkoJiFqAAA=) 0 0/100% 100%"><i></i><i></i></div>
 </main>
+<i class="tint"></i>
 <nav class="chrome" aria-label="Controls">
 <a class="ic back" href="../" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg></a>
 <button class="ic prev" type="button" aria-label="Previous page" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
-<button class="ic next" type="button" aria-label="Next page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
 <span class="progress" aria-hidden="true"><i></i></span>
+<button class="ic next" type="button" aria-label="Next page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
 <span class="count vh" aria-live="polite"></span>
 </nav>
-<noscript><style>.pages{scrollbar-width:auto}.prev,.next,.progress{display:none!important}</style></noscript>
-<script src="../assets/book.js?v=958076eeec" defer></script>
+<noscript><style>.pages{scrollbar-width:auto}.prev,.next,.progress{display:none}</style></noscript>
+<script type="module" src="../assets/book.js?v=79a3ebc142"></script>
 </body>
 </html>
