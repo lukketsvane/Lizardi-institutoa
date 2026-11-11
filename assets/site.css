@@ -63,16 +63,17 @@ img { max-width: 100%; height: auto; -webkit-touch-callout: none; -webkit-user-s
 
 .chrome { transition: opacity .25s; }
 .quiet .chrome { opacity: 0; pointer-events: none; }
+/* Bare arrows, no buttons around them. White with a dark edge reads on any page of the book. */
 .ic {
-  position: fixed; z-index: 2; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%;
-  color: var(--dark); background: rgb(255 255 255 / .8); -webkit-backdrop-filter: blur(14px) saturate(1.6); backdrop-filter: blur(14px) saturate(1.6);
-  box-shadow: 0 1px 3px rgb(0 0 0 / .2); cursor: pointer; touch-action: manipulation; transition: scale .2s var(--pop), opacity .2s;
+  position: fixed; z-index: 2; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; background: none;
+  color: #fff; filter: drop-shadow(0 0 1.5px rgb(0 0 0 / .75)) drop-shadow(0 1px 3px rgb(0 0 0 / .35));
+  cursor: pointer; touch-action: manipulation; transition: scale .2s var(--pop), opacity .2s;
 }
-.ic:active { scale: .88; }
+.ic:active { scale: .8; }
 .ic[disabled] { opacity: 0; pointer-events: none; }
-.ic svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
-.back { top: calc(var(--top) + 10px); left: calc(var(--left) + 10px); }
-.grid { top: calc(var(--top) + 10px); right: calc(var(--right) + 10px); }
+.ic svg { width: 30px; height: 30px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.back { top: calc(var(--top) + 6px); left: calc(var(--left) + 4px); }
+.grid { top: calc(var(--top) + 6px); right: calc(var(--right) + 4px); }
 .progress { position: fixed; z-index: 2; inset: 0 0 auto; height: 3px; pointer-events: none; }
 .progress i { display: block; height: 100%; transform-origin: 0 50%; scale: 0 1; transition: scale .3s; }
 
@@ -99,15 +100,14 @@ img { max-width: 100%; height: auto; -webkit-touch-callout: none; -webkit-user-s
 }
 .reader .progress { background: rgb(0 0 0 / .12); }
 .reader .progress i { background: #fff; }
-/* Arrow buttons only where there is a mouse; fingers swipe or tap the edges. */
-.prev, .next { top: calc(50% - 22px); display: none; }
-.prev { left: 14px; }
-.next { right: 14px; }
-@media (hover: hover) and (pointer: fine) { .prev, .next { display: grid; } }
+.prev, .next { top: calc(50% - 22px); }
+.prev { left: calc(var(--left) + 2px); }
+.next { right: calc(var(--right) + 2px); }
 
 /* ---------- The diary ---------- */
 
 .diary { background: var(--paper); }
+.diary .ic { color: var(--grape); filter: drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 2px #fff); } /* the comic's own ink, with a paper edge */
 .strip { max-width: 760px; margin-inline: auto; padding-bottom: var(--bottom); touch-action: pan-y pinch-zoom; }
 .chapter + .chapter { margin-top: clamp(14px, 4vw, 40px); }
 .page img { width: 100%; background-color: #fff; }

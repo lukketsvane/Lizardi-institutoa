@@ -19,7 +19,7 @@ SITE, BOOK, DIARY, SPRITES = C["site"], C["book"], C["diary"], C["sprites"]
 OCHRE, PAPER = "#c48c33", "#f5f1f8"  # the book's cover and the diary's paper, as in assets/site.css
 
 ICON = {  # 24x24, drawn with a stroke
-    "close": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+    "down": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg>',
     "prev": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
     "next": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
     "chapters": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h5v5H5zM14 5h5v5h-5zM5 14h5v5H5zM14 14h5v5h-5z"/></svg>',
@@ -175,7 +175,7 @@ def book():
 {chr(10).join(out)}
 </main>
 <nav class="chrome" aria-label="Controls">
-<a class="ic back" href="../" aria-label="Close">{ICON["close"]}</a>
+<a class="ic back" href="../" aria-label="Close">{ICON["down"]}</a>
 <button class="ic prev" type="button" aria-label="Previous page" disabled>{ICON["prev"]}</button>
 <button class="ic next" type="button" aria-label="Next page">{ICON["next"]}</button>
 <span class="progress" aria-hidden="true"><i></i></span>
@@ -211,7 +211,7 @@ def diary():
 {chr(10).join(sections)}
 </main>
 <nav class="chrome" aria-label="Controls">
-<a class="ic back" href="../" aria-label="Close">{ICON["close"]}</a>
+<a class="ic back" href="../" aria-label="Back">{ICON["prev"]}</a>
 <button class="ic grid" type="button" aria-label="Chapters" aria-haspopup="dialog">{ICON["chapters"]}</button>
 <span class="progress" aria-hidden="true"><i></i></span>
 </nav>
