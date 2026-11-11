@@ -1,8 +1,7 @@
-// The diary: one long scroll. This adds the fading controls, the chapter sheet,
+// The diary: one long scroll. This adds the bar that hides while reading, the chapter sheet,
 // the progress line, and remembers the page.
 const body = document.body;
 const pages = [...document.querySelectorAll('.page')];
-const bar = document.querySelector('.progress i');
 const sheet = document.querySelector('.sheet');
 const links = new Map([...sheet.querySelectorAll('a')].map(a => [a.hash.slice(1), a]));
 const calm = matchMedia('(prefers-reduced-motion: reduce)');
@@ -18,7 +17,7 @@ const spy = new IntersectionObserver(entries => {
   for (const entry of entries) {
     if (!entry.isIntersecting) continue;
     const page = entry.target, i = pages.indexOf(page);
-    bar.style.scale = `${(i + 1) / pages.length} 1`;
+    body.style.setProperty('--p', (i + 1) / pages.length);
     sheet.querySelector('[aria-current]')?.removeAttribute('aria-current');
     links.get(page.closest('.chapter').id).setAttribute('aria-current', 'true');
     try { i ? localStorage.setItem('diary', page.id) : localStorage.removeItem('diary'); } catch {}
@@ -26,13 +25,8 @@ const spy = new IntersectionObserver(entries => {
 }, { rootMargin: '-50% 0px -50% 0px' });
 pages.forEach(page => spy.observe(page));
 
-// The controls fade away while reading. Scrolling back up, a tap, or moving the mouse brings them back.
-let fade;
-function wake() {
-  body.classList.remove('quiet');
-  clearTimeout(fade);
-  fade = setTimeout(() => { if (!sheet.open) body.classList.add('quiet'); }, 2500);
-}
+// The bar gets out of the way when you read on, and comes back when you scroll up, tap, or move the mouse.
+const hide = quiet => body.classList.toggle('quiet', quiet && !sheet.open);
 let lastY = scrollY, queued = false;
 addEventListener('scroll', () => {
   if (queued) return;
@@ -41,21 +35,25 @@ addEventListener('scroll', () => {
     queued = false;
     const y = Math.max(0, scrollY);
     if (Math.abs(y - lastY) < 8) return;
-    if (y < lastY) wake(); else body.classList.add('quiet');
+    hide(y > lastY && y > 60);
     lastY = y;
   });
 }, { passive: true });
-document.querySelector('.strip').addEventListener('click', () => (body.classList.contains('quiet') ? wake() : body.classList.add('quiet')));
-addEventListener('pointermove', e => { if (e.pointerType === 'mouse') wake(); });
-wake();
+document.querySelector('.strip').addEventListener('click', () => hide(!body.classList.contains('quiet')));
+addEventListener('pointermove', e => { if (e.pointerType === 'mouse' && e.clientY < 120) hide(false); });
+addEventListener('keydown', () => hide(false));
 
-// Back to the shelf. Stepping back in history is instant, so do that when the shelf is where we came from.
+// Back to the shelf. Stepping back in history is instant, so do that when the shelf is where we came from;
+// if that step turns out not to leave this page, go there the ordinary way.
+let leaving;
 document.querySelector('.back').addEventListener('click', e => {
   e.preventDefault();
   const shelf = new URL('../', location.href).href;
-  if (document.referrer === shelf && history.length > 1) history.back();
-  else location.href = shelf;
+  if (document.referrer !== shelf || history.length < 2) { location.href = shelf; return; }
+  history.back();
+  leaving = setTimeout(() => { location.href = shelf; }, 400);
 });
+addEventListener('pagehide', () => clearTimeout(leaving));
 
 // The chapter sheet.
 function close() {

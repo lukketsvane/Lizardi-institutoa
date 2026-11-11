@@ -16,7 +16,8 @@ ROOT = Path(__file__).resolve().parent.parent
 C = json.loads((ROOT / "content.json").read_text())
 M = json.loads((ROOT / "assets" / "meta.json").read_text())
 SITE, BOOK, DIARY, SPRITES = C["site"], C["book"], C["diary"], C["sprites"]
-OCHRE, PAPER = "#c48c33", "#f5f1f8"  # the book's cover and the diary's paper, as in assets/site.css
+OCHRE, GARDEN, GRAPE = "#c48c33", "#9da94a", "#5d157f"  # book cover, shelf and diary ink, as in assets/site.css
+SPLASH = M.get("splash", [])  # launch screens for iPhones, written by tools/images.py
 
 ICON = {  # 24x24, drawn with a stroke
     "down": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg>',
@@ -87,11 +88,17 @@ V = version()
 
 def head(title, description, root, theme):
     og = (SITE["url"].rstrip("/") + "/" if SITE["url"] else root) + "assets/og.jpg"
+    # While an installed app starts, iOS shows the picture made for exactly that screen, or else a white flash.
+    launch = "\n".join(
+        f'<link rel="apple-touch-startup-image" href="{root}assets/splash/{w}x{h}-{r}x.png" media="(device-width: {w}px) and '
+        f'(device-height: {h}px) and (-webkit-device-pixel-ratio: {r}) and (orientation: portrait)">'
+        for w, h, r in SPLASH
+    )
     return f"""<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>{e(title)}</title>
 <meta name="description" content="{e(description)}">
 <meta name="theme-color" content="{theme}">
@@ -102,13 +109,18 @@ def head(title, description, root, theme):
 <link rel="icon" href="{root}favicon.ico" sizes="48x48">
 <link rel="icon" type="image/png" sizes="192x192" href="{root}assets/icons/icon-192.png">
 <link rel="apple-touch-icon" href="{root}assets/icons/apple-touch-icon.png">
+{launch}
 <meta property="og:type" content="website">
 <meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(description)}">
 <meta property="og:image" content="{og}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="{root}assets/site.css?v={V}">
-<script>if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("{root}sw.js"));</script>
+<script>
+if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("{root}sw.js"));
+addEventListener("gesturestart", event => event.preventDefault()); // no pinch-zoom in Safari: it is an app
+addEventListener("touchstart", () => {{}}, {{passive: true}}); // lets iOS show the pressed look of things
+</script>
 </head>
 """
 
@@ -129,6 +141,14 @@ def page_picture(page, root, sizes, eager=False, alt=None):
     )
 
 
+def wall(root, cover):
+    """The background collage; assets/wall.js scatters the drawings and moves them with the scrolling."""
+    tilting = ("bug", "poop", "lizard", "microbe")  # these may lie at any angle; plants and animals stay upright
+    sprites = [[name, M["sprites"][name]["w"], M["sprites"][name]["h"], int(kind in tilting)] for name, kind in SPRITES.items()]
+    return (f'<div class="wall" aria-hidden="true" data-src="{root}assets/sprites/" data-cover="{cover}" '
+            f"data-sprites='{json.dumps(sprites, separators=(',', ':'))}'></div>")
+
+
 def spread_alt(s):
     return " ".join(f"{side} page: {s[key]}" for side, key in (("Left", "left"), ("Right", "right")) if s[key])
 
@@ -139,16 +159,14 @@ def home():
     cover = BOOK["spreads"][0]["id"]
     m = M["book"][cover]
     first_page = {p["id"]: p for ch in DIARY["chapters"] for p in ch["pages"]}[DIARY["cover"]]
-    tilting = ("bug", "poop", "lizard", "microbe")  # these may lie at any angle; plants and animals stay upright
-    sprites = [[name, M["sprites"][name]["w"], M["sprites"][name]["h"], int(kind in tilting)] for name, kind in SPRITES.items()]
-    return head(SITE["name"], SITE["description"], "", OCHRE) + f"""<body class="home">
+    return head(SITE["name"], SITE["description"], "", GARDEN) + f"""<body class="home">
 <h1 class="vh">{e(SITE["name"])}</h1>
+{wall("", 0.9)}
 <main class="shelf">
-<div class="stage" aria-hidden="true" data-sprites='{json.dumps(sprites, separators=(",", ":"))}'></div>
 <a class="work book" href="book/" aria-label="{e(BOOK["title"])}"><img src="assets/book/{cover}-1280.webp" width="1280" height="{round(1280 * m["h"] / m["w"])}" alt="" fetchpriority="high"></a>
-<a class="work diary" href="diary/" aria-label="{e(DIARY["title"])}">{page_picture(first_page, "", "(max-aspect-ratio: 1/1) 56vw, 31vw", eager=True, alt="")}</a>
+<a class="work diary" href="diary/" aria-label="{e(DIARY["title"])}">{page_picture(first_page, "", "(max-aspect-ratio: 1/1) 72vw, 31vw", eager=True, alt="")}</a>
 </main>
-<script src="assets/home.js?v={V}" defer></script>
+<script type="module" src="assets/wall.js?v={V}"></script>
 </body>
 </html>
 """
@@ -174,15 +192,16 @@ def book():
 <main class="pages" tabindex="0" aria-label="{len(spreads)} spreads" style="--ar:{first["w"] / first["h"]:.4f}">
 {chr(10).join(out)}
 </main>
+<i class="tint"></i>
 <nav class="chrome" aria-label="Controls">
 <a class="ic back" href="../" aria-label="Close">{ICON["down"]}</a>
 <button class="ic prev" type="button" aria-label="Previous page" disabled>{ICON["prev"]}</button>
-<button class="ic next" type="button" aria-label="Next page">{ICON["next"]}</button>
 <span class="progress" aria-hidden="true"><i></i></span>
+<button class="ic next" type="button" aria-label="Next page">{ICON["next"]}</button>
 <span class="count vh" aria-live="polite"></span>
 </nav>
-<noscript><style>.pages{{scrollbar-width:auto}}.prev,.next,.progress{{display:none!important}}</style></noscript>
-<script src="../assets/book.js?v={V}" defer></script>
+<noscript><style>.pages{{scrollbar-width:auto}}.prev,.next,.progress{{display:none}}</style></noscript>
+<script type="module" src="../assets/book.js?v={V}"></script>
 </body>
 </html>
 """
@@ -205,22 +224,24 @@ def diary():
             f'<li><a href="#{cid}" title="{title}"><img src="../assets/diary/{first}-240.webp" width="240" height="{round(240 * m["h"] / m["w"])}" '
             f'alt="{title}" loading="lazy" decoding="async"></a></li>'
         )
-    return head(f'{DIARY["title"]} · {SITE["name"]}', DIARY["description"], "../", PAPER) + f"""<body class="diary">
+    return head(f'{DIARY["title"]} · {SITE["name"]}', DIARY["description"], "../", GRAPE) + f"""<body class="diary">
 <h1 class="vh">{e(DIARY["title"])}</h1>
-<main class="strip">
-{chr(10).join(sections)}
-</main>
-<nav class="chrome" aria-label="Controls">
+{wall("../", 0.6)}
+<nav class="bar" aria-label="Controls">
 <a class="ic back" href="../" aria-label="Back">{ICON["prev"]}</a>
 <button class="ic grid" type="button" aria-label="Chapters" aria-haspopup="dialog">{ICON["chapters"]}</button>
 <span class="progress" aria-hidden="true"><i></i></span>
 </nav>
+<main class="strip">
+{chr(10).join(sections)}
+</main>
 <dialog class="sheet" aria-label="Chapters">
 <div class="grab"></div>
 <ol class="thumbs">{"".join(thumbs)}</ol>
 </dialog>
 <noscript><style>.grid,.progress{{display:none}}</style></noscript>
-<script src="../assets/diary.js?v={V}" defer></script>
+<script type="module" src="../assets/wall.js?v={V}"></script>
+<script type="module" src="../assets/diary.js?v={V}"></script>
 </body>
 </html>
 """
@@ -237,15 +258,15 @@ def manifest():
         "start_url": "./",
         "scope": "./",
         "display": "standalone",
-        "background_color": OCHRE,
-        "theme_color": OCHRE,
+        "background_color": GARDEN,
+        "theme_color": GARDEN,
         "icons": [icon("icon-192", 192), icon("icon-512", 512), icon("icon-maskable-512", 512, purpose="maskable")],
     }, indent=1) + "\n"
 
 
 def service_worker():
     shell = ["./", "book/", "diary/", "manifest.webmanifest", "assets/icons/icon-192.png",
-             *(f"assets/{name}?v={V}" for name in ("site.css", "home.js", "book.js", "diary.js"))]
+             *(f"assets/{name}?v={V}" for name in ("site.css", "wall.js", "book.js", "diary.js"))]
     return SERVICE_WORKER.replace("VERSION", V).replace("FILES", json.dumps(shell))
 
 
