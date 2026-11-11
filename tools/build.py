@@ -62,13 +62,19 @@ def wave(seed):
 
 
 def page_picture(page, root, sizes, eager=False):
-    w, h = M["diary"][page["id"]]["w"], M["diary"][page["id"]]["h"]
+    m = M["diary"][page["id"]]
+    w, h = m["w"], m["h"]
     base = f"{root}assets/diary/{page['id']}"
     load = 'fetchpriority="high"' if eager else 'loading="lazy"'
     return (
-        f'<picture><source type="image/avif" srcset="{base}-800.avif 800w, {base}-1400.avif 1400w" sizes="{sizes}">'
-        f'<img src="{base}-1000.webp" width="1000" height="{round(1000 * h / w)}" alt="{e(page["alt"])}" {load} decoding="async"></picture>'
+        f'<picture><source type="image/avif" srcset="{base}-800.avif 800w, {base}-1200.avif 1200w, {base}-1600.avif 1600w" sizes="{sizes}">'
+        f'<img src="{base}-1000.webp" width="1000" height="{round(1000 * h / w)}" alt="{e(page["alt"])}" {load} decoding="async" {preview(m)}></picture>'
     )
+
+
+def preview(m):
+    """The tiny inline preview shows through until the real image has loaded."""
+    return f'style="background:url({m["lq"]}) 0 0/100% 100%"'
 
 
 def spread_alt(s):
@@ -192,8 +198,8 @@ def book():
         load = 'fetchpriority="high"' if i == 1 else 'loading="lazy"'
         out.append(
             f'<div class="spread" id="{i}" style="--l:{m["l"]};--r:{m["r"]}">'
-            f'<img src="{base}-1280.webp" srcset="{base}-1280.webp 1280w, {base}-2400.webp 2400w" sizes="(max-aspect-ratio: 1/1) 200vw, 100vw" '
-            f'width="{m["w"]}" height="{m["h"]}" alt="{e(spread_alt(s))}" {load} decoding="async"><i></i><i></i></div>'
+            f'<img src="{base}-1280.webp" srcset="{base}-1280.webp 1280w, {base}-2400.webp 2400w" sizes="(max-aspect-ratio: 1/1) 200vw, min(100vw, 142vh)" '
+            f'width="{m["w"]}" height="{m["h"]}" alt="{e(spread_alt(s))}" {load} decoding="async" {preview(m)}><i></i><i></i></div>'
         )
     end = BOOK["end"]
     em = M["sprites"][end]
@@ -222,17 +228,43 @@ def book():
 
 # ---------------------------------------------------------------- diary
 
+def friezes(count):
+    """A little row of garden drawings to open each chapter; a different mix every time."""
+    rnd = random.Random(4)
+    pool = [s for s in sprite_list(("plant", "bug", "animal", "lizard", "poop", "rock")) if s[0] != SITE["footer_sprite"]]
+    rnd.shuffle(pool)
+    rows, i = [], 0
+    for _ in range(count):
+        imgs, used = [], 0
+        while used < 76:
+            name, w, h, _kind = pool[i % len(pool)]
+            i += 1
+            width = min(max(w * 0.06, 9), 30, 22 * w / h)  # % of the row; evens out tiny, very wide and very tall drawings
+            if used + width > 94:
+                continue
+            used += width
+            flying = name.startswith(("butterfly", "fly-", "bird-"))
+            lift = f";margin-bottom:{rnd.randint(8, 16)}%" if flying else ""
+            imgs.append(
+                f'<img src="../assets/sprites/{name}.webp" width="{w}" height="{h}" alt="" loading="lazy" decoding="async" '
+                f'style="width:{width:.1f}%;--r:{rnd.randint(-6, 6)}deg{lift}">'
+            )
+        rows.append(f'<div class="frieze" aria-hidden="true">{"".join(imgs)}</div>')
+    return rows
+
+
 def diary():
     chs = chapters()
+    garden = friezes(len(chs))
     toc = "".join(f'<li><a href="#{ch["slug"]}">{e(ch["title"])}</a></li>' for ch in chs)
-    sizes = "(min-width: 860px) 760px, calc(100vw - 32px)"
+    sizes = "(min-width: 860px) 760px, 100vw"
     sections = []
     for ci, ch in enumerate(chs):
         figs = "".join(
             f'<figure class="page" id="{p["id"]}">{page_picture(p, "../", sizes, eager=(ci == 0 and pi == 0))}</figure>'
             for pi, p in enumerate(ch["pages"])
         )
-        sections.append(f'<section class="chapter" id="{ch["slug"]}" aria-labelledby="{ch["slug"]}-h"><h2 id="{ch["slug"]}-h">{e(ch["title"])}</h2>{figs}</section>')
+        sections.append(f'<section class="chapter" id="{ch["slug"]}" aria-labelledby="{ch["slug"]}-h">{"" if ch.get("quiet") else garden[ci]}<h2 id="{ch["slug"]}-h">{e(ch["title"])}</h2>{figs}</section>')
     return head(f'{DIARY["title"]} · {SITE["name"]}', DIARY["blurb"], "../", "#f5f1f8") + f"""<body class="diary">
 <a class="skip" href="#read">Skip to the comic</a>
 <header class="dbar">
@@ -246,10 +278,10 @@ def diary():
 <p>{e(DIARY["blurb"])}</p>
 <p class="note">{e(DIARY["note"])}</p>
 </header>
-<nav class="toc" id="toc" aria-labelledby="toc-h">
-<h2 id="toc-h">Chapters</h2>
-<ol>{toc}</ol>
-</nav>
+<details class="toc" id="toc">
+<summary>Chapters</summary>
+<nav aria-label="Chapters"><ol>{toc}</ol></nav>
+</details>
 <main class="dmain" id="read">
 {chr(10).join(sections)}
 <p class="dend"><a class="btn" href="#toc">Back to the chapters</a><a class="btn light" href="../book/">Read the picture book</a></p>

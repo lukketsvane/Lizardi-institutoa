@@ -39,6 +39,9 @@ function update() {
   prev.disabled = at === 0;
   next.disabled = at === list.length - 1;
   if (location.hash !== '#' + spread.id) history.replaceState(null, '', '#' + spread.id);
+  // Fetch the next two spreads ahead of the reader, so turning the page never waits.
+  const i = spreads.indexOf(spread);
+  for (const s of spreads.slice(i + 1, i + 3)) s.querySelector('img').loading = 'eager';
 }
 
 let queued = false;

@@ -10,19 +10,21 @@ Expected layout of the originals folder (PNG exports):
     sprites/snail-pink.png ...     cut-out drawings with transparency
 
 Writes assets/book, assets/diary, assets/sprites and assets/meta.json
-(sizes and edge colours that tools/build.py needs). Existing, up-to-date
+(sizes, edge colours and tiny inline previews that tools/build.py needs). Existing, up-to-date
 outputs are skipped. Needs Pillow >= 11.3 (pip install pillow).
 """
+import base64
+import io
 import json
 import sys
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, ImageChops, ImageFilter
 
 ROOT = Path(__file__).resolve().parent.parent
 ASSETS = ROOT / "assets"
 BOOK_WIDTHS = (480, 1280, 2400)
-PAGE_AVIF_WIDTHS = (800, 1400)
+PAGE_AVIF_WIDTHS = (800, 1200, 1600)  # 2x phones and plain desktops, 3x phones, retina desktops and tablets
 PAGE_WEBP_WIDTH = 1000  # fallback for browsers without AVIF
 
 
@@ -43,6 +45,13 @@ def flatten(im):
     return bg.convert("RGB")
 
 
+def placeholder(im):
+    """A 20px-wide preview, inlined in the page so something shows at once."""
+    buf = io.BytesIO()
+    fit(im, 20).save(buf, "WEBP", quality=40, method=6)
+    return "data:image/webp;base64," + base64.b64encode(buf.getvalue()).decode()
+
+
 def edge_colour(im, x):
     """Most common colour in a thin vertical strip: the page's paper colour."""
     strip = im.crop((x, 0, x + 12, im.height)).quantize(8).convert("RGB")
@@ -58,6 +67,7 @@ def book(src_dir, meta):
         meta["book"][src.stem] = {
             "w": im.width, "h": im.height,
             "l": edge_colour(im, 6), "r": edge_colour(im, im.width - 18),
+            "lq": placeholder(im),
         }
         for w in BOOK_WIDTHS:
             out = out_dir / f"{src.stem}-{w}.webp"
@@ -72,11 +82,8 @@ def diary(src_dir, meta):
     for src in sorted(src_dir.glob("*.png")):
         jobs = [(out_dir / f"{src.stem}-{w}.avif", w, "AVIF", {"quality": 50, "speed": 4}) for w in PAGE_AVIF_WIDTHS]
         jobs.append((out_dir / f"{src.stem}-{PAGE_WEBP_WIDTH}.webp", PAGE_WEBP_WIDTH, "WEBP", {"quality": 62, "method": 6}))
-        with Image.open(src) as probe:
-            meta["diary"][src.stem] = {"w": probe.width, "h": probe.height}
-        if not any(stale(src, out) for out, *_ in jobs):
-            continue
         im = flatten(Image.open(src))
+        meta["diary"][src.stem] = {"w": im.width, "h": im.height, "lq": placeholder(im)}
         for out, w, fmt, opts in jobs:
             if stale(src, out):
                 fit(im, w).save(out, fmt, **opts)
@@ -88,8 +95,12 @@ def sprites(src_dir, meta):
     out_dir.mkdir(parents=True, exist_ok=True)
     for src in sorted(src_dir.glob("*.png")):
         im = Image.open(src).convert("RGBA")
-        # Trim to the visible drawing; ignore near-invisible stray pixels.
-        box = im.getchannel("A").point(lambda a: 255 if a > 24 else 0).getbbox()
+        # Keep only what is on or right next to the solid drawing: stray faint pixels
+        # further out show up as a haze on light backgrounds.
+        alpha = im.getchannel("A")
+        near_solid = alpha.point(lambda a: 255 if a > 110 else 0).filter(ImageFilter.MaxFilter(15))
+        im.putalpha(ImageChops.multiply(alpha, near_solid))
+        box = im.getbbox()
         if box:
             im = im.crop(box)
         meta["sprites"][src.stem] = {"w": im.width, "h": im.height}

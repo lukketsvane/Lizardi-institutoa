@@ -80,8 +80,9 @@ h2 { font: 700 clamp(2rem, 1.2rem + 4vw, 4rem)/1.02 var(--display); text-wrap: b
 .bubble .ch:nth-child(3n) { rotate: -1deg; translate: 0 -.02em; }
 
 .stage { position: absolute; inset: 0; z-index: -1; }
+.spot { position: absolute; }
 .sprite {
-  position: absolute; opacity: 0; scale: .4; rotate: var(--r, 0deg); cursor: pointer; user-select: none; -webkit-user-drag: none;
+  display: block; width: 100%; opacity: 0; scale: .4; rotate: var(--r, 0deg); cursor: pointer; user-select: none; -webkit-user-drag: none;
   transition: opacity .4s calc(var(--i, 0) * 28ms), scale .7s var(--pop) calc(var(--i, 0) * 28ms);
   animation: bob var(--t, 5s) ease-in-out var(--d, 0s) infinite alternate;
 }
@@ -91,6 +92,11 @@ h2 { font: 700 clamp(2rem, 1.2rem + 4vw, 4rem)/1.02 var(--display); text-wrap: b
 @keyframes bob { to { translate: 0 var(--b, -8px); } }
 @keyframes wiggle { 25% { rotate: calc(var(--r, 0deg) - 9deg); } 75% { rotate: calc(var(--r, 0deg) + 9deg); } }
 @keyframes hop { 30% { translate: 0 -34px; scale: 1.08 .94; } 60% { translate: 0 0; scale: .94 1.06; } }
+/* The collage rearranges itself as you scroll away: things above the title float off, things below sink behind the hill. */
+@supports (animation-timeline: scroll()) {
+  .spot { animation: wander linear both; animation-timeline: scroll(root); animation-range: 0 100vh; }
+  @keyframes wander { to { translate: 0 var(--p, 0px); } }
+}
 
 /* ---------- Home: bands ---------- */
 
@@ -158,12 +164,17 @@ h2 { font: 700 clamp(2rem, 1.2rem + 4vw, 4rem)/1.02 var(--display); text-wrap: b
 .foot nav { display: flex; gap: 1.4em; }
 .foot a { padding: .4em 0; }
 .foot .walker { position: absolute; right: 7%; bottom: calc(100% + .5 * var(--wave)); width: clamp(170px, 26vw, 360px); pointer-events: none; }
+@supports (animation-timeline: view()) {
+  .foot .walker { animation: walk linear both; animation-timeline: view(); animation-range: entry 0% cover 60%; }
+  @keyframes walk { from { translate: -55vw 0; } }
+}
 
 /* ---------- Picture-book reader ---------- */
 
 .reader { --bar: 56px; height: 100dvh; overflow: hidden; display: grid; grid-template: var(--bar) 1fr / minmax(0, 1fr); background: #2b2118; }
 .rbar { position: relative; z-index: 2; display: flex; gap: 12px; align-items: center; justify-content: space-between; padding: 0 clamp(8px, 2vw, 20px); background: var(--cream); font: 600 .95rem/1.2 var(--display); }
 .rbar h1 { flex: 1; min-width: 0; font: inherit; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 480px) { .rbar { justify-content: space-between; } .rbar h1 { position: absolute; width: 1px; height: 1px; clip-path: inset(50%); } }
 .rbar a, .rbar .count { flex: none; min-width: 4.5em; white-space: nowrap; }
 .rbar a { text-decoration: none; padding: .7em 0; }
 .rbar a:hover { text-decoration: underline wavy; text-underline-offset: .25em; }
@@ -208,7 +219,8 @@ h2 { font: 700 clamp(2rem, 1.2rem + 4vw, 4rem)/1.02 var(--display); text-wrap: b
 .turn.next { right: clamp(6px, 1.5vw, 18px); }
 .turn:hover { scale: 1.12; }
 .turn[disabled] { opacity: 0; pointer-events: none; }
-@media (hover: none) and (max-width: 700px) { .turn { top: auto; bottom: 10px; width: 44px; height: 44px; opacity: .85; } }
+/* One page at a time: keep the buttons off the artwork, down in the corners. */
+@media (max-aspect-ratio: 1/1) { .turn { top: auto; bottom: 12px; width: 46px; height: 46px; } }
 
 /* ---------- Diary reader ---------- */
 
@@ -229,7 +241,7 @@ h2 { font: 700 clamp(2rem, 1.2rem + 4vw, 4rem)/1.02 var(--display); text-wrap: b
 .dhead .note { font-size: .85em; opacity: .8; }
 
 .toc { scroll-margin-top: calc(var(--bar) + 12px); }
-.toc h2 { font: 600 .8rem/1.2 var(--display); letter-spacing: .12em; text-transform: uppercase; opacity: .8; margin-bottom: .6em; }
+.toc summary { width: fit-content; padding: .5em 0; font: 600 .8rem/1.2 var(--display); letter-spacing: .12em; text-transform: uppercase; cursor: pointer; }
 .toc ol { columns: 16em 2; column-gap: 2em; }
 .toc li { break-inside: avoid; }
 .toc a { display: block; padding: .32em .7em; border-radius: 8px; text-decoration: none; font-size: .9em; font-weight: 600; line-height: 1.25; }
@@ -241,6 +253,12 @@ h2 { font: 700 clamp(2rem, 1.2rem + 4vw, 4rem)/1.02 var(--display); text-wrap: b
 .chapter + .chapter { margin-top: clamp(40px, 7vw, 88px); }
 .chapter > h2 { display: flex; gap: .8em; align-items: baseline; font: 600 .95rem/1.2 var(--display); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 14px; }
 .chapter > h2::after { content: ""; flex: 1; border-top: 2px dashed rgb(93 21 127 / .35); }
+.frieze { display: flex; justify-content: space-around; align-items: flex-end; gap: 1.5%; padding: 0 3%; margin-bottom: 10px; }
+.frieze img { flex: none; rotate: var(--r, 0deg); transform-origin: 50% 100%; }
+@supports (animation-timeline: view()) {
+  .frieze img { animation: sprout linear both; animation-timeline: view(); animation-range: entry 0% cover 22%; }
+  @keyframes sprout { from { opacity: 0; scale: .4; translate: 0 40%; } }
+}
 .page { scroll-margin-top: calc(var(--bar) + 12px); }
 .page + .page { margin-top: clamp(14px, 3vw, 28px); }
 .page img { width: 100%; background: #fff; border-radius: 3px; box-shadow: 0 0 0 1.5px rgb(93 21 127 / .35), 6px 8px 0 rgb(93 21 127 / .14); }
@@ -248,11 +266,18 @@ h2 { font: 700 clamp(2rem, 1.2rem + 4vw, 4rem)/1.02 var(--display); text-wrap: b
 .dend .btn { background: var(--grape); border-color: var(--grape); color: var(--paper); }
 .dend .btn.light { background: var(--paper); color: var(--grape); }
 
+@media (max-width: 600px) {
+  .dlayout { width: 100%; }
+  .dhead, .toc, .chapter > h2, .dend { margin-inline: var(--gutter); }
+  .page img { border-radius: 0; box-shadow: none; }
+}
 @media (min-width: 1040px) {
   .dlayout { grid-template-columns: 250px minmax(0, 760px); justify-content: center; align-items: start; }
   .dhead { grid-column: 2; }
   .toc { grid-column: 1; grid-row: 1 / span 2; position: sticky; top: calc(var(--bar) + 20px); max-height: calc(100dvh - var(--bar) - 40px); overflow-y: auto; }
   .toc ol { columns: auto; }
+  .toc summary { list-style: none; cursor: default; }
+  .toc summary::-webkit-details-marker { display: none; }
   .dmain { grid-column: 2; }
   .dbar .jump { display: none; }
 }

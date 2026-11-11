@@ -45,10 +45,16 @@ function layout() {
       img.alt = '';
       img.className = 'sprite';
       img.draggable = false;
-      img.style.cssText = `left:${(box.x / W) * 100}%;top:${(box.y / H) * 100}%;width:${(w / W) * 100}%;` +
-        `--i:${imgs.length};--r:${((rand() - 0.5) * (tilts ? 24 : 6)).toFixed(1)}deg;` +
+      img.style.cssText = `--i:${imgs.length};--r:${((rand() - 0.5) * (tilts ? 24 : 6)).toFixed(1)}deg;` +
         `--t:${(3.5 + rand() * 4).toFixed(1)}s;--d:${(-rand() * 6).toFixed(1)}s;--b:${(rand() < 0.5 ? -1 : 1) * (5 + rand() * 7) | 0}px`;
-      imgs.push(img);
+      // Above the title it drifts up and away on scroll, below it sinks; so it never crosses the text.
+      const holder = document.createElement('span');
+      holder.className = 'spot';
+      const above = box.y + h / 2 < keepClear[0].y + keepClear[0].h / 2;
+      holder.style.cssText = `left:${(box.x / W) * 100}%;top:${(box.y / H) * 100}%;width:${(w / W) * 100}%;` +
+        `--p:${(above ? -1 : 0.7) * (40 + rand() * 180) | 0}px`;
+      holder.append(img);
+      imgs.push(holder);
       break;
     }
   }

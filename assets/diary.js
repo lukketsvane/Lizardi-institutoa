@@ -1,5 +1,15 @@
 // Highlight the chapter being read, in the chapter list and in the top bar.
 const toc = document.querySelector('.toc');
+
+// The chapter list is a closed disclosure on phones, so the comic starts right away,
+// and an always-open sidebar on wide screens.
+const wide = matchMedia('(min-width: 1040px)');
+const sync = () => { if (wide.matches) toc.open = true; };
+wide.addEventListener('change', () => { toc.open = wide.matches; });
+toc.addEventListener('toggle', sync);
+sync();
+document.querySelectorAll('a[href="#toc"]').forEach(a => a.addEventListener('click', () => { toc.open = true; }));
+
 const now = document.querySelector('.dbar .now');
 const links = new Map([...toc.querySelectorAll('a')].map(a => [a.hash.slice(1), a]));
 
