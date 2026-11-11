@@ -8,7 +8,7 @@ The picture book *Lizarda and the World Within* and the PhD diary comic, as a sm
 
 There is no text or design of our own on the pages; the artwork is the interface.
 
-The collage is the background of the shelf and the diary. The drawings land differently on every visit, and each one slides past at its own speed as the page scrolls, so the pattern keeps changing. On the shelf they are in colour and hop when poked; in the diary they are still and in the comic's own purple.
+The collage is the background of the shelf and the diary. The drawings land differently on every visit, and each one slides past at its own speed, so the pattern keeps changing: in the diary as the page scrolls, on the shelf (one screen that never scrolls) when you swipe across it. On the shelf they are in colour and hop when poked; in the diary they are in the comic's own purple.
 
 | | Phone | Mouse and keyboard |
 |---|---|---|
@@ -17,7 +17,7 @@ The collage is the background of the shelf and the diary. The drawings land diff
 | Chapters in the diary | tap the grid in the bar; drag the sheet down to dismiss | click the grid |
 | Show the diary's bar | scroll up a little, or tap | move the mouse to the top |
 
-The controls are bare arrows in a shade of the page they sit on. On a phone the book's controls sit in the bands above and below the page, off the artwork. Pinch and double-tap zoom are switched off, as in an app.
+The controls are bare arrows in a shade of the page they sit on. On a phone the book's controls sit in the bands above and below the page, off the artwork. Pinch and double-tap zoom are switched off, as in an app. So is the rubber-band bounce past the ends of a page, where the browser allows it; the collage and the diary's bar are anchored to the page (sticky, not fixed), so where a browser bounces anyway they move with it.
 
 Both readers remember where you stopped. Pages you have opened stay available offline.
 
