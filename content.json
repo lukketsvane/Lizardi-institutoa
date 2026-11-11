@@ -444,12 +444,14 @@
   "people": [
    {
     "id": "lucas",
-    "name": "Lucas",
+    "name": "Lucas Padilha",
+    "role": "Research",
     "text": ""
    },
    {
-    "id": "emma",
-    "name": "Emma",
+    "id": "ida",
+    "name": "Ida Eva Smiseth Neverdahl",
+    "role": "Drawings",
     "text": ""
    }
   ]

@@ -8,7 +8,7 @@ Expected layout of the originals folder (PNG exports):
     book/01.png, 02.png ...        picture-book spreads, in reading order
     diary/intro-0.png, p20.png ... comic pages, named by the ids in content.json
     sprites/snail-pink.png ...     cut-out drawings with transparency
-    faces/lucas.png, emma.png      their heads, cut out of the diary; named by the ids in content.json
+    faces/lucas.png, ida.png       their heads, cut out of the diary; named by the ids in content.json
 
 Writes assets/book, assets/diary, assets/sprites, assets/faces and assets/meta.json
 (sizes, edge colours and tiny inline previews that tools/build.py needs),
