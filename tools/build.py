@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the three pages, the web-app manifest and the service worker.
+"""Generate the four pages, the web-app manifest and the service worker.
 
     python3 tools/build.py
 
@@ -15,8 +15,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 C = json.loads((ROOT / "content.json").read_text())
 M = json.loads((ROOT / "assets" / "meta.json").read_text())
-SITE, BOOK, DIARY, SPRITES = C["site"], C["book"], C["diary"], C["sprites"]
-OCHRE, GARDEN, GRAPE = "#c48c33", "#9da94a", "#5d157f"  # book cover, shelf and diary ink, as in assets/site.css
+SITE, BOOK, DIARY, ABOUT, SPRITES = C["site"], C["book"], C["diary"], C["about"], C["sprites"]
+OCHRE, GARDEN, GRAPE, PAPER = "#c48c33", "#9da94a", "#5d157f", "#f5f1f8"  # book cover, shelf, diary ink and paper, as in assets/site.css
 SPLASH = M.get("splash", [])  # launch screens for iPhones, written by tools/images.py
 
 ICON = {  # 24x24, drawn with a stroke
@@ -150,6 +150,11 @@ def wall(root, cover, stir=""):
             f"data-sprites='{json.dumps(sprites, separators=(',', ':'))}'></div>")
 
 
+def face(person, root, alt, size=""):
+    m = M["faces"][person["id"]]
+    return f'<img src="{root}assets/faces/{person["id"]}{size}.webp" width="{m["w"]}" height="{m["h"]}" alt="{e(alt)}" decoding="async">'
+
+
 def spread_alt(s):
     return " ".join(f"{side} page: {s[key]}" for side, key in (("Left", "left"), ("Right", "right")) if s[key])
 
@@ -160,12 +165,14 @@ def home():
     cover = BOOK["spreads"][0]["id"]
     m = M["book"][cover]
     first_page = {p["id"]: p for ch in DIARY["chapters"] for p in ch["pages"]}[DIARY["cover"]]
+    faces = "".join(f'<a href="about/#{p["id"]}">{face(p, "", p["name"], "-200")}</a>' for p in ABOUT["people"])
     return head(SITE["name"], SITE["description"], "", GARDEN) + f"""<body class="home">
 <h1 class="vh">{e(SITE["name"])}</h1>
 {wall("", 0.9, "data-stir")}
 <main class="shelf">
 <a class="work book" href="book/" aria-label="{e(BOOK["title"])}"><img src="assets/book/{cover}-1280.webp" width="1280" height="{round(1280 * m["h"] / m["w"])}" alt="" fetchpriority="high"></a>
 <a class="work diary" href="diary/" aria-label="{e(DIARY["title"])}">{page_picture(first_page, "", "(max-aspect-ratio: 1/1) 60vw, 31vw", eager=True, alt="")}</a>
+<nav class="faces" aria-label="{e(ABOUT["title"])}">{faces}</nav>
 </main>
 <script type="module" src="assets/wall.js?v={V}"></script>
 </body>
@@ -248,6 +255,25 @@ def diary():
 """
 
 
+# ---------------------------------------------------------------- the people
+
+def about():
+    people = "\n".join(
+        f'<section class="person" id="{p["id"]}">{face(p, "../", "")}<h2>{e(p["name"])}</h2>'
+        + "".join(f"<p>{e(par)}</p>" for par in p["text"].split("\n\n") if par) + "</section>"
+        for p in ABOUT["people"]
+    )
+    return head(f'{ABOUT["title"]} · {SITE["name"]}', SITE["description"], "../", PAPER) + f"""<body class="about">
+<h1 class="vh">{e(ABOUT["title"])}</h1>
+<a class="ic back" href="../" aria-label="Back">{ICON["prev"]}</a>
+<main class="people">
+{people}
+</main>
+</body>
+</html>
+"""
+
+
 # ---------------------------------------------------------------- the app wrapper
 
 def manifest():
@@ -266,13 +292,13 @@ def manifest():
 
 
 def service_worker():
-    shell = ["./", "book/", "diary/", "manifest.webmanifest", "assets/icons/icon-192.png",
+    shell = ["./", "book/", "diary/", "about/", "manifest.webmanifest", "assets/icons/icon-192.png",
              *(f"assets/{name}?v={V}" for name in ("site.css", "wall.js", "book.js", "diary.js"))]
     return SERVICE_WORKER.replace("VERSION", V).replace("FILES", json.dumps(shell))
 
 
 def main():
-    outputs = {"index.html": home(), "book/index.html": book(), "diary/index.html": diary(),
+    outputs = {"index.html": home(), "book/index.html": book(), "diary/index.html": diary(), "about/index.html": about(),
                "manifest.webmanifest": manifest(), "sw.js": service_worker()}
     for path, text in outputs.items():
         out = ROOT / path

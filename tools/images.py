@@ -8,8 +8,9 @@ Expected layout of the originals folder (PNG exports):
     book/01.png, 02.png ...        picture-book spreads, in reading order
     diary/intro-0.png, p20.png ... comic pages, named by the ids in content.json
     sprites/snail-pink.png ...     cut-out drawings with transparency
+    faces/lucas.png, emma.png      their heads, cut out of the diary; named by the ids in content.json
 
-Writes assets/book, assets/diary, assets/sprites and assets/meta.json
+Writes assets/book, assets/diary, assets/sprites, assets/faces and assets/meta.json
 (sizes, edge colours and tiny inline previews that tools/build.py needs),
 plus the app icons, favicon.ico, the iPhone launch screens and the link-preview image. Existing, up-to-date
 outputs are skipped. Needs Pillow >= 11.3 (pip install pillow).
@@ -28,6 +29,7 @@ BOOK_WIDTHS = (480, 1280, 2400)
 PAGE_AVIF_WIDTHS = (800, 1200, 1600)  # 2x phones and plain desktops, 3x phones, retina desktops and tablets
 PAGE_WEBP_WIDTH = 1000  # fallback for browsers without AVIF
 PAGE_THUMB_WIDTH = 240  # chapter picker
+FACE_SMALL_WIDTH = 200  # on the shelf
 ICON_SPRITE, ICON_COLOUR = "lizard-stretching", "#8d76ad"  # Lizarda, on the lilac of her wall
 SHELF_COLOUR = "#9da94a"  # the shelf's background (--garden in assets/site.css)
 # iPhone screens as width, height and pixel ratio: SE/8, 8 Plus, X/11 Pro/mini, XR/11, XS Max/11 Pro Max,
@@ -121,6 +123,19 @@ def sprites(src_dir, meta):
             print(out.relative_to(ROOT))
 
 
+def faces(src_dir, meta):
+    """Their heads: full size for the page about them, small for the shelf."""
+    out_dir = ASSETS / "faces"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    for src in sorted(src_dir.glob("*.png")):
+        im = Image.open(src).convert("RGBA")
+        meta["faces"][src.stem] = {"w": im.width, "h": im.height}
+        for out, w in ((out_dir / f"{src.stem}.webp", im.width), (out_dir / f"{src.stem}-{FACE_SMALL_WIDTH}.webp", FACE_SMALL_WIDTH)):
+            if stale(src, out):
+                fit(im, w).save(out, "WEBP", quality=80, alpha_quality=90, method=6)
+                print(out.relative_to(ROOT))
+
+
 def icons(sprite_dir):
     """Home-screen icons and the favicon: one drawing centred on one colour."""
     art = cutout(sprite_dir / f"{ICON_SPRITE}.png")
@@ -169,7 +184,7 @@ def main():
     originals = Path(sys.argv[1])
     meta_path = ASSETS / "meta.json"
     meta = json.loads(meta_path.read_text()) if meta_path.exists() else {}
-    for key, fn in (("book", book), ("diary", diary), ("sprites", sprites)):
+    for key, fn in (("book", book), ("diary", diary), ("sprites", sprites), ("faces", faces)):
         if (originals / key).is_dir():
             meta[key] = {}
             fn(originals / key, meta)
