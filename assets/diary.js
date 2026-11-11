@@ -1,28 +1,92 @@
-// Highlight the chapter being read, in the chapter list and in the top bar.
-const toc = document.querySelector('.toc');
+// The diary: one long scroll. This adds the fading controls, the chapter sheet,
+// the progress line, and remembers the page.
+const body = document.body;
+const pages = [...document.querySelectorAll('.page')];
+const bar = document.querySelector('.progress i');
+const sheet = document.querySelector('.sheet');
+const links = new Map([...sheet.querySelectorAll('a')].map(a => [a.hash.slice(1), a]));
+const calm = matchMedia('(prefers-reduced-motion: reduce)');
 
-// The chapter list is a closed disclosure on phones, so the comic starts right away,
-// and an always-open sidebar on wide screens.
-const wide = matchMedia('(min-width: 1040px)');
-const sync = () => { if (wide.matches) toc.open = true; };
-wide.addEventListener('change', () => { toc.open = wide.matches; });
-toc.addEventListener('toggle', sync);
-sync();
-document.querySelectorAll('a[href="#toc"]').forEach(a => a.addEventListener('click', () => { toc.open = true; }));
+// Pick up where the reader left off.
+try {
+  const last = !location.hash && document.getElementById(localStorage.getItem('diary'));
+  if (last) last.scrollIntoView();
+} catch {}
 
-const now = document.querySelector('.dbar .now');
-const links = new Map([...toc.querySelectorAll('a')].map(a => [a.hash.slice(1), a]));
-
+// Which page is under the middle of the screen?
 const spy = new IntersectionObserver(entries => {
   for (const entry of entries) {
     if (!entry.isIntersecting) continue;
-    toc.querySelector('[aria-current]')?.removeAttribute('aria-current');
-    const link = links.get(entry.target.id);
-    link.setAttribute('aria-current', 'true');
-    now.textContent = link.textContent;
-    // Keep it in view inside the sticky chapter list (a no-op when the list is not scrollable).
-    toc.scrollTop += link.getBoundingClientRect().top - toc.getBoundingClientRect().top - toc.clientHeight / 2;
+    const page = entry.target, i = pages.indexOf(page);
+    bar.style.scale = `${(i + 1) / pages.length} 1`;
+    sheet.querySelector('[aria-current]')?.removeAttribute('aria-current');
+    links.get(page.closest('.chapter').id).setAttribute('aria-current', 'true');
+    try { i ? localStorage.setItem('diary', page.id) : localStorage.removeItem('diary'); } catch {}
   }
-}, { rootMargin: '-40% 0px -60% 0px' });
+}, { rootMargin: '-50% 0px -50% 0px' });
+pages.forEach(page => spy.observe(page));
 
-document.querySelectorAll('.chapter').forEach(section => spy.observe(section));
+// The controls fade away while reading. Scrolling back up, a tap, or moving the mouse brings them back.
+let fade;
+function wake() {
+  body.classList.remove('quiet');
+  clearTimeout(fade);
+  fade = setTimeout(() => { if (!sheet.open) body.classList.add('quiet'); }, 2500);
+}
+let lastY = scrollY, queued = false;
+addEventListener('scroll', () => {
+  if (queued) return;
+  queued = true;
+  requestAnimationFrame(() => {
+    queued = false;
+    const y = Math.max(0, scrollY);
+    if (Math.abs(y - lastY) < 8) return;
+    if (y < lastY) wake(); else body.classList.add('quiet');
+    lastY = y;
+  });
+}, { passive: true });
+document.querySelector('.strip').addEventListener('click', () => (body.classList.contains('quiet') ? wake() : body.classList.add('quiet')));
+addEventListener('pointermove', e => { if (e.pointerType === 'mouse') wake(); });
+wake();
+
+// Back to the shelf. Stepping back in history is instant, so do that when the shelf is where we came from.
+document.querySelector('.back').addEventListener('click', e => {
+  e.preventDefault();
+  const shelf = new URL('../', location.href).href;
+  if (document.referrer === shelf && history.length > 1) history.back();
+  else location.href = shelf;
+});
+
+// The chapter sheet.
+function close() {
+  if (calm.matches) return sheet.close();
+  sheet.classList.add('closing');
+  sheet.addEventListener('animationend', () => sheet.close(), { once: true });
+}
+sheet.addEventListener('close', () => { sheet.classList.remove('closing'); sheet.style.translate = ''; });
+document.querySelector('.grid').addEventListener('click', () => {
+  sheet.showModal();
+  sheet.querySelector('[aria-current]')?.scrollIntoView({ block: 'center' });
+});
+sheet.addEventListener('click', e => {
+  if (e.target === sheet || e.target.matches('.grab')) close(); // a tap outside it, or on its handle
+  else if (e.target.closest('a')) sheet.close(); // a chapter was picked; the link does the jumping
+});
+sheet.addEventListener('cancel', e => { e.preventDefault(); close(); }); // Escape
+
+// Drag the sheet down to dismiss it: by its handle, or anywhere once it is scrolled to the top.
+let drag = null;
+sheet.addEventListener('touchstart', e => {
+  drag = sheet.scrollTop <= 0 || e.target.matches('.grab') ? { y: e.touches[0].clientY, dy: 0 } : null;
+}, { passive: true });
+sheet.addEventListener('touchmove', e => {
+  if (!drag) return;
+  drag.dy = Math.max(0, e.touches[0].clientY - drag.y);
+  sheet.style.translate = `0 ${drag.dy}px`;
+}, { passive: true });
+sheet.addEventListener('touchend', () => {
+  if (!drag) return;
+  if (drag.dy > 90) close();
+  else sheet.style.translate = '';
+  drag = null;
+});

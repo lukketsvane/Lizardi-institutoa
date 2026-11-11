@@ -1,19 +1,13 @@
 {
  "site": {
   "name": "Lizardi Institutoa",
-  "url": "",
-  "description": "A picture book and a comic diary about lizards, their poop, and the tiny worlds that live inside of us all.",
-  "lede": "A picture book and a comic diary about lizards, their poop, and the tiny worlds that live inside of us all.",
-  "footer_sprite": "lizard-walking-tongue-out",
-  "within": [
-   "Welcome to the world within!",
-   "Here you can find bacteria, fungi and viruses. We call them microbes. They’re so small, you can’t see them. But they’re super important!"
-  ]
+  "short_name": "Lizardi",
+  "url": "https://lizardi-institutoa.iverfinne.no",
+  "description": "A picture book and a comic diary about lizards, their poop, and the tiny worlds that live inside of us all."
  },
  "book": {
   "title": "Lizarda and the World Within",
-  "blurb": "Deep in the forest, there’s a little house. It belongs to a curious scientist – a poop scientist! And from a hole in the garden wall, something small is peeking out…",
-  "end": "microbe-dancing-pair-upright",
+  "description": "Deep in the forest, there’s a little house. It belongs to a curious scientist – a poop scientist! And from a hole in the garden wall, something small is peeking out…",
   "spreads": [
    {
     "id": "01",
@@ -124,13 +118,8 @@
  },
  "diary": {
   "title": "The PhD Diary",
-  "blurb": "Lucas is doing a PhD on wall lizards and the microbes in their gut. This is his diary in comics: lizard hunts in Formentera, crickets wearing backpacks, and the days that were hard.",
-  "note": "Some chapters are about animal experiments, and about lizards that die.",
-  "teaser": [
-   "p20",
-   "intro-1",
-   "hunt-01"
-  ],
+  "description": "Lucas is doing a PhD on wall lizards and the microbes in their gut. This is his diary in comics: lizard hunts in Formentera, crickets wearing backpacks, and the days that were hard.",
+  "cover": "intro-0",
   "chapters": [
    {
     "title": "Intro",
@@ -302,7 +291,6 @@
    },
    {
     "title": "The First One",
-    "quiet": true,
     "pages": [
      {
       "id": "p34",
@@ -316,7 +304,6 @@
    },
    {
     "title": "Too Much Liquid?",
-    "quiet": true,
     "pages": [
      {
       "id": "p36",
@@ -373,7 +360,6 @@
    },
    {
     "title": "The Last Meal",
-    "quiet": true,
     "pages": [
      {
       "id": "p45",
@@ -432,7 +418,6 @@
    },
    {
     "title": "I Do Care About Them",
-    "quiet": true,
     "pages": [
      {
       "id": "p52",

@@ -1,19 +1,9 @@
-// Scatter the cut-out drawings around the title, like on the book cover.
+// Scatter the cut-out drawings around the book and the diary, like on the back of the book.
+// They land differently on every visit.
 const stage = document.querySelector('.stage');
-const copy = document.querySelector('.hero-copy');
-const nav = document.querySelector('.topnav');
+const works = [...document.querySelectorAll('.work')];
 const sprites = JSON.parse(stage.dataset.sprites) // [name, width, height, tilts]
-  .sort((a, b) => b[1] * b[2] - a[1] * a[2]);
-
-// Small seeded generator, so the garden looks the same on every visit.
-function seeded(seed) {
-  return () => {
-    seed = (seed + 0x6d2b79f5) | 0;
-    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
+  .sort((a, b) => b[1] * b[2] - a[1] * a[2]); // biggest first, while there is still room
 
 const overlaps = (a, b, slack) =>
   a.x + a.w * slack < b.x + b.w && b.x + b.w * slack < a.x + a.w &&
@@ -22,39 +12,28 @@ const overlaps = (a, b, slack) =>
 let laidOutFor = 0;
 function layout() {
   const W = stage.clientWidth, H = stage.clientHeight;
-  if (Math.abs(W - laidOutFor) < 60) return;
+  if (Math.abs(W - laidOutFor) < 60) return; // e.g. the address bar sliding away
   laidOutFor = W;
-  const rand = seeded(21);
-  const scale = Math.min(0.56, Math.max(0.27, W / 2500));
-  const s = stage.getBoundingClientRect(), c = copy.getBoundingClientRect();
-  const keepClear = [
-    { x: c.left - s.left - 10, y: c.top - s.top - 10, w: c.width + 20, h: c.height + 20 },
-    { x: 0, y: 0, w: W, h: nav.getBoundingClientRect().bottom - s.top },
-  ];
+  const scale = Math.min(0.56, Math.max(0.25, W / 2500));
+  // The drawings may tuck a little way under the edges of the book and the diary, no further.
+  const keepClear = works.map(el => ({ x: el.offsetLeft + 10, y: el.offsetTop + 10, w: el.offsetWidth - 20, h: el.offsetHeight - 20 }));
   const placed = [];
   const imgs = [];
   for (const [name, w0, h0, tilts] of sprites) {
     const w = w0 * scale, h = h0 * scale;
     if (w > W * 0.6 || h > H * 0.5) continue;
-    for (let tries = 0; tries < 90; tries++) {
-      const box = { x: -w * 0.2 + rand() * (W - w * 0.6), y: keepClear[1].h + rand() * (H - keepClear[1].h - h * 0.7), w, h };
+    for (let tries = 0; tries < 40; tries++) {
+      const box = { x: -w * 0.2 + Math.random() * (W - w * 0.6), y: -h * 0.15 + Math.random() * (H - h * 0.7), w, h };
       if (keepClear.some(k => overlaps(box, k, 0)) || placed.some(p => overlaps(box, p, 0.1))) continue;
       placed.push(box);
       const img = new Image();
       img.src = `assets/sprites/${name}.webp`;
       img.alt = '';
       img.className = 'sprite';
-      img.draggable = false;
-      img.style.cssText = `--i:${imgs.length};--r:${((rand() - 0.5) * (tilts ? 24 : 6)).toFixed(1)}deg;` +
-        `--t:${(3.5 + rand() * 4).toFixed(1)}s;--d:${(-rand() * 6).toFixed(1)}s;--b:${(rand() < 0.5 ? -1 : 1) * (5 + rand() * 7) | 0}px`;
-      // Above the title it drifts up and away on scroll, below it sinks; so it never crosses the text.
-      const holder = document.createElement('span');
-      holder.className = 'spot';
-      const above = box.y + h / 2 < keepClear[0].y + keepClear[0].h / 2;
-      holder.style.cssText = `left:${(box.x / W) * 100}%;top:${(box.y / H) * 100}%;width:${(w / W) * 100}%;` +
-        `--p:${(above ? -1 : 0.7) * (40 + rand() * 180) | 0}px`;
-      holder.append(img);
-      imgs.push(holder);
+      img.style.cssText = `left:${(box.x / W) * 100}%;top:${(box.y / H) * 100}%;width:${(w / W) * 100}%;` +
+        `--i:${imgs.length};--r:${((Math.random() - 0.5) * (tilts ? 24 : 6)).toFixed(1)}deg;` +
+        `--t:${(3.5 + Math.random() * 4).toFixed(1)}s;--d:${(-Math.random() * 6).toFixed(1)}s;--b:${(Math.random() < 0.5 ? -1 : 1) * (5 + Math.random() * 7) | 0}px`;
+      imgs.push(img);
       break;
     }
   }
@@ -63,6 +42,7 @@ function layout() {
   requestAnimationFrame(() => requestAnimationFrame(() => stage.classList.add('ready')));
 }
 
+// Poke a drawing and it hops.
 stage.addEventListener('click', e => {
   if (!e.target.classList.contains('sprite')) return;
   e.target.classList.remove('hop');
@@ -73,4 +53,4 @@ stage.addEventListener('animationend', e => e.target.classList.remove('hop'));
 
 let timer;
 addEventListener('resize', () => { clearTimeout(timer); timer = setTimeout(layout, 200); });
-document.fonts.ready.then(layout);
+layout();

@@ -1,288 +1,141 @@
-/* Lizardi Institutoa — one stylesheet for the home page and both readers. */
-
-@font-face { font-family: "DynaPuff"; src: url(fonts/dynapuff.woff2) format("woff2"); font-weight: 400 700; font-display: swap; }
-@font-face { font-family: "Shantell Sans"; src: url(fonts/shantell-sans.woff2) format("woff2"); font-weight: 300 800; font-display: swap; }
+/* Lizardi Institutoa — the artwork is the interface.
+   This only places it, and adds a few quiet controls that fade away while reading. */
 
 @view-transition { navigation: auto; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .22s; }
 
 :root {
-  /* Colours sampled from the artwork. */
-  --ochre: #c48c33;
-  --teal: #476a72;
-  --gut: #962678;
-  --paper: #f5f1f8;
-  --grape: #5d157f;
-  --plum: #6e1458;
-  --ink: #38200f;
-  --cream: #fdf3da;
-  --peach: #ffc79a;
-  --pink: #f47fb0;
-  --salmon: #f99a76;
-
-  --display: "DynaPuff", "Arial Rounded MT Bold", ui-rounded, system-ui, sans-serif;
-  --body: "Shantell Sans", "Comic Sans MS", ui-rounded, system-ui, sans-serif;
-  --gutter: clamp(16px, 5vw, 48px);
-  --wrap: min(1120px, 100% - 2 * var(--gutter));
-  --wave: clamp(22px, 5vw, 64px);
+  --ochre: #c48c33; /* the book's cover */
+  --paper: #f5f1f8; /* the diary's paper */
+  --grape: #5d157f; /* the diary's ink */
+  --dark: #2b2118;
   --pop: cubic-bezier(.34, 1.56, .64, 1);
+  /* Room for the notch, the rounded corners and the home indicator. */
+  --top: env(safe-area-inset-top, 0px);
+  --right: env(safe-area-inset-right, 0px);
+  --bottom: env(safe-area-inset-bottom, 0px);
+  --left: env(safe-area-inset-left, 0px);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
-body { margin: 0; font: 500 clamp(1.05rem, .95rem + .4vw, 1.25rem)/1.55 var(--body); color: var(--ink); background: var(--ochre); }
-img, svg { display: block; max-width: 100%; }
-img { height: auto; }
-h1, h2, h3, p, ol, ul, figure { margin: 0; }
-ol, ul { padding: 0; list-style: none; }
-a { color: inherit; }
-button { font: inherit; color: inherit; }
-:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; border-radius: 4px; }
-
-.skip { position: absolute; left: 8px; top: -4em; z-index: 10; padding: .5em 1em; border-radius: 999px; background: var(--ink); color: var(--cream); }
-.skip:focus { top: 8px; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+body, h1, h2, ol, figure { margin: 0; padding: 0; }
+ol { list-style: none; }
+img, svg, picture { display: block; }
+/* Artwork behaves like part of an app: no callout, no selection, no ghost image when dragged. */
+img { max-width: 100%; height: auto; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; -webkit-user-drag: none; }
+:focus-visible { outline: 3px solid #fff; outline-offset: 2px; box-shadow: 0 0 0 7px var(--dark); }
 .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.wrap { width: var(--wrap); margin-inline: auto; }
 
-.btn {
-  display: inline-block; padding: .7em 1.3em; border-radius: 999px; border: 3px solid var(--ink);
-  background: var(--ink); color: var(--cream); font: 600 1.05em/1.2 var(--display); text-decoration: none;
-  transition: translate .2s var(--pop), box-shadow .2s;
-  box-shadow: 0 4px 0 rgb(0 0 0 / .22);
+/* ---------- The shelf: the book and the diary, lying among the drawings ---------- */
+
+.home { height: 100dvh; overflow: hidden; overscroll-behavior: none; background: var(--ochre); }
+.shelf { position: relative; height: 100%; overflow: hidden; display: flex; align-items: center; justify-content: center; gap: clamp(24px, 7vw, 96px); padding: var(--top) var(--right) var(--bottom) var(--left); }
+.work { position: relative; z-index: 1; flex: none; height: min(62dvh, 40vw); overflow: hidden; box-shadow: 0 1px 0 rgb(0 0 0 / .2), 10px 14px 0 rgb(0 0 0 / .2); transition: scale .25s var(--pop), rotate .4s var(--pop); animation: arrive .5s var(--pop) backwards; touch-action: manipulation; }
+.work img, .work picture { width: 100%; height: 100%; }
+.work.book { aspect-ratio: 1288 / 1820; rotate: -4deg; border-radius: 3px 9px 9px 3px; }
+.work.book img { object-fit: cover; object-position: 100% 50%; } /* the front cover is the right half of the first spread */
+.work.book::after { content: ""; position: absolute; inset: 0 auto 0 0; width: 7%; background: linear-gradient(90deg, #0003, #fff2 40%, #0000); }
+.work.diary { aspect-ratio: 2550 / 3300; rotate: 3deg; border-radius: 3px; background: #fff; animation-delay: .08s; }
+.work:active { scale: .95; }
+@media (hover: hover) { .work:hover { rotate: 0deg; } }
+@keyframes arrive { from { opacity: 0; scale: .8; } }
+/* Upright phone: one above the other, corner to corner. */
+@media (max-aspect-ratio: 1/1) {
+  .shelf { flex-direction: column; gap: 0; }
+  .work { height: auto; width: min(56vw, 33dvh); }
+  .work.book { align-self: flex-start; margin-left: calc(50% - min(56vw, 33dvh) * .74); }
+  .work.diary { align-self: flex-end; margin-right: calc(50% - min(56vw, 33dvh) * .74); margin-top: -5%; }
 }
-.btn:hover { translate: 0 -3px; box-shadow: 0 7px 0 rgb(0 0 0 / .22); }
-.btn:active { translate: 0 2px; box-shadow: 0 1px 0 rgb(0 0 0 / .22); }
-.btn.light { background: var(--cream); color: var(--ink); }
 
-.eyebrow { font: 600 .85em/1.2 var(--display); letter-spacing: .12em; text-transform: uppercase; opacity: .85; }
-h2 { font: 700 clamp(2rem, 1.2rem + 4vw, 4rem)/1.02 var(--display); text-wrap: balance; }
-
-/* ---------- Home: hero ---------- */
-
-.hero { position: relative; isolation: isolate; overflow: hidden; min-height: 100svh; display: grid; grid-template-rows: auto 1fr; padding-bottom: calc(var(--wave) + 24px); }
-.topnav { display: flex; flex-wrap: wrap; gap: .2em 1.4em; align-items: center; justify-content: space-between; padding: 14px var(--gutter); font: 600 1rem/1.2 var(--display); }
-.topnav a { text-decoration: none; padding: .45em 0; }
-.topnav a:hover { text-decoration: underline wavy; text-underline-offset: .25em; }
-.topnav .links { display: flex; gap: 1.4em; }
-
-.hero-copy { justify-self: center; align-self: center; width: min(46rem, 100% - 2 * var(--gutter)); padding: clamp(18px, 3vw, 36px) 0; text-align: center; }
-.hero-copy .lede { max-width: 30em; margin: 1.1em auto 1.4em; font-weight: 600; text-wrap: balance; }
-.hero-copy .cta { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
-
-/* Bubble lettering after the book cover: gradient fill, plum outline drawn by a copy underneath. */
-.bubble { font: 700 clamp(3.2rem, 14.5vw, 9.5rem)/.92 var(--display); letter-spacing: .01em; }
-.bubble .w { display: block; white-space: nowrap; }
-.bubble .ch { position: relative; display: inline-block; color: transparent; }
-.bubble .ch::before, .bubble .ch::after { content: attr(data-c); position: absolute; inset: 0; }
-.bubble .ch::before { color: var(--plum); -webkit-text-stroke: .16em var(--plum); text-shadow: 0 .06em 0 var(--plum); }
-.bubble .ch::after { background: linear-gradient(170deg, var(--salmon) 25%, var(--pink) 85%); -webkit-background-clip: text; background-clip: text; }
-.bubble .ch:nth-child(3n+1) { rotate: -4deg; }
-.bubble .ch:nth-child(3n+2) { rotate: 3deg; translate: 0 .03em; }
-.bubble .ch:nth-child(3n) { rotate: -1deg; translate: 0 -.02em; }
-
-.stage { position: absolute; inset: 0; z-index: -1; }
-.spot { position: absolute; }
+.stage { position: absolute; inset: 0; }
 .sprite {
-  display: block; width: 100%; opacity: 0; scale: .4; rotate: var(--r, 0deg); cursor: pointer; user-select: none; -webkit-user-drag: none;
-  transition: opacity .4s calc(var(--i, 0) * 28ms), scale .7s var(--pop) calc(var(--i, 0) * 28ms);
+  position: absolute; opacity: 0; scale: .4; rotate: var(--r, 0deg); cursor: pointer;
+  transition: opacity .4s calc(var(--i, 0) * 25ms), scale .7s var(--pop) calc(var(--i, 0) * 25ms);
   animation: bob var(--t, 5s) ease-in-out var(--d, 0s) infinite alternate;
 }
 .stage.ready .sprite { opacity: 1; scale: 1; }
-.sprite:hover { animation: wiggle .6s ease-in-out; }
 .sprite.hop { animation: hop .55s ease-out; }
 @keyframes bob { to { translate: 0 var(--b, -8px); } }
-@keyframes wiggle { 25% { rotate: calc(var(--r, 0deg) - 9deg); } 75% { rotate: calc(var(--r, 0deg) + 9deg); } }
 @keyframes hop { 30% { translate: 0 -34px; scale: 1.08 .94; } 60% { translate: 0 0; scale: .94 1.06; } }
-/* The collage rearranges itself as you scroll away: things above the title float off, things below sink behind the hill. */
-@supports (animation-timeline: scroll()) {
-  .spot { animation: wander linear both; animation-timeline: scroll(root); animation-range: 0 100vh; }
-  @keyframes wander { to { translate: 0 var(--p, 0px); } }
+
+/* ---------- Controls shared by both readers ---------- */
+
+.chrome { transition: opacity .25s; }
+.quiet .chrome { opacity: 0; pointer-events: none; }
+.ic {
+  position: fixed; z-index: 2; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%;
+  color: var(--dark); background: rgb(255 255 255 / .8); -webkit-backdrop-filter: blur(14px) saturate(1.6); backdrop-filter: blur(14px) saturate(1.6);
+  box-shadow: 0 1px 3px rgb(0 0 0 / .2); cursor: pointer; touch-action: manipulation; transition: scale .2s var(--pop), opacity .2s;
 }
+.ic:active { scale: .88; }
+.ic[disabled] { opacity: 0; pointer-events: none; }
+.ic svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.back { top: calc(var(--top) + 10px); left: calc(var(--left) + 10px); }
+.grid { top: calc(var(--top) + 10px); right: calc(var(--right) + 10px); }
+.progress { position: fixed; z-index: 2; inset: 0 0 auto; height: 3px; pointer-events: none; }
+.progress i { display: block; height: 100%; transform-origin: 0 50%; scale: 0 1; transition: scale .3s; }
 
-/* ---------- Home: bands ---------- */
+/* ---------- The picture book ---------- */
 
-.band { position: relative; background: var(--bg); color: var(--fg); padding: clamp(40px, 7vw, 96px) 0 calc(var(--wave) + clamp(40px, 7vw, 96px)); }
-.band .wave, .foot .wave { position: absolute; left: 0; bottom: calc(100% - 1px); width: 100%; height: var(--wave); fill: var(--bg); }
-.band.teal { --bg: var(--teal); --fg: var(--cream); }
-.band.gut { --bg: var(--gut); --fg: var(--peach); overflow-x: clip; text-align: center; }
-.band.paper { --bg: var(--paper); --fg: var(--grape); padding-bottom: calc(var(--wave) + clamp(120px, 20vw, 260px)); }
-
-.two { display: grid; gap: clamp(28px, 6vw, 80px); align-items: center; }
-@media (min-width: 800px) { .two { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); } .two.rev { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); } }
-.txt > * + * { margin-top: .8em; }
-.txt .btn { margin-top: .4em; }
-.txt p { max-width: 34em; }
-
-/* The book as an object: front cover = right half of the cover spread. */
-.cover { display: block; position: relative; width: min(360px, 78%); margin-inline: auto; aspect-ratio: 1288 / 1820; rotate: -4deg; border-radius: 4px 10px 10px 4px; overflow: hidden; box-shadow: 0 2px 0 #0002, 14px 18px 0 rgb(0 0 0 / .22); transition: rotate .4s var(--pop), translate .4s var(--pop); }
-.cover img { width: 100%; height: 100%; object-fit: cover; object-position: 100% 50%; }
-.cover::after { content: ""; position: absolute; inset: 0 auto 0 0; width: 7%; background: linear-gradient(90deg, #0003, #fff2 40%, #0000); }
-.cover:hover { rotate: 0deg; translate: 0 -6px; }
-
-.strip { display: flex; gap: clamp(12px, 2vw, 22px); margin-top: clamp(32px, 6vw, 72px); padding: 14px var(--gutter) 22px; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-color: var(--cream) transparent; }
-.strip li { flex: none; scroll-snap-align: center; }
-.strip li:nth-child(odd) { rotate: -1.5deg; }
-.strip li:nth-child(even) { rotate: 1.2deg; translate: 0 6px; }
-.strip a { display: block; border-radius: 6px; overflow: hidden; box-shadow: 0 6px 0 rgb(0 0 0 / .2); transition: translate .25s var(--pop); }
-.strip a:hover { translate: 0 -8px; }
-.strip img { width: clamp(200px, 26vw, 320px); }
-
-/* The world within: microbes drifting past. */
-.gut h2 { color: var(--peach); }
-.gut p { max-width: 30em; margin: .8em auto 0; padding-inline: var(--gutter); font-weight: 600; color: #ffe1c7; }
-.drift { display: flex; width: max-content; animation: drift 90s linear infinite; }
-.drift.back { animation-direction: reverse; animation-duration: 110s; }
-.drift .set { display: flex; align-items: center; gap: clamp(28px, 6vw, 84px); padding-right: clamp(28px, 6vw, 84px); }
-.drift img { width: calc(var(--w) * var(--k, .36) * 1px); max-width: none; animation: bob 4s ease-in-out infinite alternate; }
-.drift img:nth-child(odd) { animation-duration: 5.5s; animation-delay: -2s; --b: 10px; }
-.gut .drift:first-of-type { margin-bottom: clamp(24px, 4vw, 48px); }
-.gut .drift:last-of-type { margin-top: clamp(24px, 4vw, 48px); }
-@media (min-width: 800px) { .drift img { --k: .52; } }
-@keyframes drift { to { translate: -50% 0; } }
-
-/* The diary: purple ink on paper. */
-.band.paper .btn { background: var(--grape); border-color: var(--grape); color: var(--paper); }
-.fan { position: relative; display: block; width: min(330px, 70%); margin-inline: auto; aspect-ratio: 2550 / 3300; }
-.fan picture { position: absolute; inset: 0; transition: rotate .4s var(--pop), translate .4s var(--pop); }
-.fan img { width: 100%; height: 100%; border-radius: 4px; background: #fff; box-shadow: 0 0 0 2px var(--grape), 8px 10px 0 rgb(93 21 127 / .22); }
-.fan picture:nth-child(1) { rotate: 9deg; translate: 16% 3%; }
-.fan picture:nth-child(2) { rotate: -8deg; translate: -16% 2%; }
-.fan picture:nth-child(3) { rotate: -1.5deg; }
-.fan:hover picture:nth-child(1) { rotate: 14deg; translate: 26% 3%; }
-.fan:hover picture:nth-child(2) { rotate: -13deg; translate: -26% 2%; }
-
-.chapters { margin-top: clamp(36px, 6vw, 72px); }
-.chapters h3 { font: 600 .85em/1.2 var(--display); letter-spacing: .12em; text-transform: uppercase; opacity: .85; margin-bottom: 1em; }
-.chapters ol { columns: 17em 3; column-gap: clamp(20px, 4vw, 48px); }
-.chapters li { break-inside: avoid; border-top: 2px dashed rgb(93 21 127 / .3); }
-.chapters a { display: flex; gap: .7em; align-items: baseline; padding: .55em 0; text-decoration: none; font-weight: 600; line-height: 1.25; }
-.chapters a:hover span { text-decoration: underline wavy; text-underline-offset: .2em; }
-.chapters small { margin-left: auto; font-size: .75em; font-weight: 500; opacity: .7; white-space: nowrap; }
-
-.foot { position: relative; --bg: #3a0d52; background: var(--bg); color: var(--paper); padding: clamp(28px, 5vw, 56px) 0; font-size: .9em; }
-.foot .wrap { display: flex; flex-wrap: wrap; gap: .6em 2em; align-items: baseline; justify-content: space-between; }
-.foot strong { font: 700 1.5em var(--display); }
-.foot nav { display: flex; gap: 1.4em; }
-.foot a { padding: .4em 0; }
-.foot .walker { position: absolute; right: 7%; bottom: calc(100% + .5 * var(--wave)); width: clamp(170px, 26vw, 360px); pointer-events: none; }
-@supports (animation-timeline: view()) {
-  .foot .walker { animation: walk linear both; animation-timeline: view(); animation-range: entry 0% cover 60%; }
-  @keyframes walk { from { translate: -55vw 0; } }
-}
-
-/* ---------- Picture-book reader ---------- */
-
-.reader { --bar: 56px; height: 100dvh; overflow: hidden; display: grid; grid-template: var(--bar) 1fr / minmax(0, 1fr); background: #2b2118; }
-.rbar { position: relative; z-index: 2; display: flex; gap: 12px; align-items: center; justify-content: space-between; padding: 0 clamp(8px, 2vw, 20px); background: var(--cream); font: 600 .95rem/1.2 var(--display); }
-.rbar h1 { flex: 1; min-width: 0; font: inherit; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-@media (max-width: 480px) { .rbar { justify-content: space-between; } .rbar h1 { position: absolute; width: 1px; height: 1px; clip-path: inset(50%); } }
-.rbar a, .rbar .count { flex: none; min-width: 4.5em; white-space: nowrap; }
-.rbar a { text-decoration: none; padding: .7em 0; }
-.rbar a:hover { text-decoration: underline wavy; text-underline-offset: .25em; }
-.rbar .count { text-align: right; font-variant-numeric: tabular-nums; }
-.arrow { display: inline-block; width: .55em; height: .55em; border: solid currentColor; border-width: 0 0 .18em .18em; rotate: 45deg; margin: 0 .35em .08em .15em; }
-
-.pages { --h: calc(100dvh - var(--bar)); display: flex; height: var(--h); overflow: auto hidden; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; }
+.reader { height: 100dvh; overflow: hidden; overscroll-behavior: none; background: var(--dark); }
+.pages { --h: 100dvh; display: flex; height: var(--h); overflow: auto hidden; scroll-snap-type: x mandatory; overscroll-behavior: none; scrollbar-width: none; touch-action: pan-x pinch-zoom; }
 .pages::-webkit-scrollbar { display: none; }
-.pages:focus-visible { outline-offset: -3px; }
+.pages:focus-visible { outline: none; box-shadow: none; }
 .spread { position: relative; flex: none; height: 100%; display: grid; place-items: center; background: linear-gradient(90deg, var(--l) 50%, var(--r) 0); }
-.spread > img { display: block; max-width: none; }
+.spread > img { max-width: none; }
 .spread > i { position: absolute; top: 0; left: 0; width: 50%; height: 100%; pointer-events: none; }
 .spread > i + i { left: 50%; }
-.end { width: 100vw; scroll-snap-align: center; --l: var(--gut); --r: var(--gut); color: var(--peach); text-align: center; align-content: center; gap: 1.2em; padding: var(--gutter); }
-.end img { width: min(46vw, 260px, 40vh); height: auto; margin-inline: auto; animation: bob 3s ease-in-out infinite alternate; }
-.end p { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
-
 /* Wide windows: one spread at a time. */
-@media (min-aspect-ratio: 1/1) {
+@media (min-aspect-ratio: 1001/1000) {
   .spread { width: 100vw; scroll-snap-align: center; scroll-snap-stop: always; }
-  .spread:not(.end) > img { width: min(100vw, var(--h) * var(--ar)); height: auto; }
+  .spread > img { width: min(100vw, var(--h) * var(--ar)); }
 }
 /* Tall windows: one page at a time, i.e. two stops per spread. */
 @media (max-aspect-ratio: 1/1) {
   .pages { --pw: min(100vw, var(--h) * var(--ar) / 2); padding-inline: calc((100vw - var(--pw)) / 2); }
-  .spread:not(.end) > img { width: calc(var(--pw) * 2); height: auto; }
+  .spread > img { width: calc(var(--pw) * 2); }
   .spread > i { scroll-snap-align: center; scroll-snap-stop: always; }
-  .end { width: var(--pw); }
 }
-/* Short landscape phones: let the page use the whole height, bar floats. */
-@media (max-height: 480px) and (min-aspect-ratio: 1/1) {
-  .reader { --bar: 0px; }
-  .rbar { position: fixed; inset: 6px auto auto 6px; padding: 0 12px; border-radius: 999px; background: rgb(253 243 218 / .9); }
-  .rbar h1 { display: none; }
-  .rbar .count { min-width: 0; }
+.reader .progress { background: rgb(0 0 0 / .12); }
+.reader .progress i { background: #fff; }
+/* Arrow buttons only where there is a mouse; fingers swipe or tap the edges. */
+.prev, .next { top: calc(50% - 22px); display: none; }
+.prev { left: 14px; }
+.next { right: 14px; }
+@media (hover: hover) and (pointer: fine) { .prev, .next { display: grid; } }
+
+/* ---------- The diary ---------- */
+
+.diary { background: var(--paper); }
+.strip { max-width: 760px; margin-inline: auto; padding-bottom: var(--bottom); touch-action: pan-y pinch-zoom; }
+.chapter + .chapter { margin-top: clamp(14px, 4vw, 40px); }
+.page img { width: 100%; background-color: #fff; }
+@media (min-width: 800px) {
+  .strip { padding-block: 24px; }
+  .page + .page { margin-top: 16px; }
+  .page img { border-radius: 2px; box-shadow: 0 0 0 1px rgb(93 21 127 / .25); }
 }
+.diary .progress i { background: var(--grape); }
 
-.turn { position: fixed; z-index: 2; top: calc(50% + var(--bar) / 2 - 26px); width: 52px; height: 52px; border: 0; border-radius: 50%; background: rgb(253 243 218 / .92); color: var(--ink); cursor: pointer; box-shadow: 0 3px 0 rgb(0 0 0 / .25); transition: scale .2s var(--pop), opacity .2s; }
-.turn::before { content: ""; position: absolute; inset: 0; margin: auto; width: 13px; height: 13px; border: solid currentColor; border-width: 0 0 4px 4px; border-radius: 2px; rotate: 45deg; translate: 3px 0; }
-.turn.next::before { rotate: -135deg; translate: -3px 0; }
-.turn.prev { left: clamp(6px, 1.5vw, 18px); }
-.turn.next { right: clamp(6px, 1.5vw, 18px); }
-.turn:hover { scale: 1.12; }
-.turn[disabled] { opacity: 0; pointer-events: none; }
-/* One page at a time: keep the buttons off the artwork, down in the corners. */
-@media (max-aspect-ratio: 1/1) { .turn { top: auto; bottom: 12px; width: 46px; height: 46px; } }
-
-/* ---------- Diary reader ---------- */
-
-.diary { --bar: 52px; background: #ebe4f1; color: var(--grape); }
-.dbar { position: sticky; top: 0; z-index: 3; height: var(--bar); display: flex; gap: 14px; align-items: center; justify-content: space-between; padding: 0 clamp(10px, 2vw, 20px); background: var(--paper); border-bottom: 2px solid var(--grape); font: 600 .95rem/1.2 var(--display); }
-.dbar a { flex: none; text-decoration: none; padding: .7em 0; white-space: nowrap; }
-.dbar a:hover { text-decoration: underline wavy; text-underline-offset: .25em; }
-.dbar .now { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; opacity: .75; }
-.dbar::after { content: ""; position: absolute; left: 0; bottom: -5px; width: 100%; height: 3px; background: var(--pink); transform-origin: 0 50%; scale: 0 1; }
-@supports (animation-timeline: scroll()) {
-  .dbar::after { animation: grow linear both; animation-timeline: scroll(root); }
-  @keyframes grow { to { scale: 1 1; } }
-}
-
-.dlayout { display: grid; gap: clamp(20px, 4vw, 56px); width: min(1180px, 100% - 2 * var(--gutter)); margin-inline: auto; padding: clamp(24px, 5vw, 56px) 0 clamp(48px, 8vw, 96px); }
-.dhead h1 { font: 700 clamp(2.4rem, 1.4rem + 5vw, 4.5rem)/1 var(--display); }
-.dhead p { max-width: 34em; margin-top: .8em; }
-.dhead .note { font-size: .85em; opacity: .8; }
-
-.toc { scroll-margin-top: calc(var(--bar) + 12px); }
-.toc summary { width: fit-content; padding: .5em 0; font: 600 .8rem/1.2 var(--display); letter-spacing: .12em; text-transform: uppercase; cursor: pointer; }
-.toc ol { columns: 16em 2; column-gap: 2em; }
-.toc li { break-inside: avoid; }
-.toc a { display: block; padding: .32em .7em; border-radius: 8px; text-decoration: none; font-size: .9em; font-weight: 600; line-height: 1.25; }
-.toc a:hover { background: rgb(93 21 127 / .1); }
-.toc a[aria-current] { background: var(--grape); color: var(--paper); }
-
-.dmain { width: min(760px, 100%); margin-inline: auto; }
-.chapter { scroll-margin-top: calc(var(--bar) + 12px); }
-.chapter + .chapter { margin-top: clamp(40px, 7vw, 88px); }
-.chapter > h2 { display: flex; gap: .8em; align-items: baseline; font: 600 .95rem/1.2 var(--display); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 14px; }
-.chapter > h2::after { content: ""; flex: 1; border-top: 2px dashed rgb(93 21 127 / .35); }
-.frieze { display: flex; justify-content: space-around; align-items: flex-end; gap: 1.5%; padding: 0 3%; margin-bottom: 10px; }
-.frieze img { flex: none; rotate: var(--r, 0deg); transform-origin: 50% 100%; }
-@supports (animation-timeline: view()) {
-  .frieze img { animation: sprout linear both; animation-timeline: view(); animation-range: entry 0% cover 22%; }
-  @keyframes sprout { from { opacity: 0; scale: .4; translate: 0 40%; } }
-}
-.page { scroll-margin-top: calc(var(--bar) + 12px); }
-.page + .page { margin-top: clamp(14px, 3vw, 28px); }
-.page img { width: 100%; background: #fff; border-radius: 3px; box-shadow: 0 0 0 1.5px rgb(93 21 127 / .35), 6px 8px 0 rgb(93 21 127 / .14); }
-.dend { margin-top: clamp(40px, 7vw, 88px); display: flex; flex-wrap: wrap; gap: 12px; }
-.dend .btn { background: var(--grape); border-color: var(--grape); color: var(--paper); }
-.dend .btn.light { background: var(--paper); color: var(--grape); }
-
-@media (max-width: 600px) {
-  .dlayout { width: 100%; }
-  .dhead, .toc, .chapter > h2, .dend { margin-inline: var(--gutter); }
-  .page img { border-radius: 0; box-shadow: none; }
-}
-@media (min-width: 1040px) {
-  .dlayout { grid-template-columns: 250px minmax(0, 760px); justify-content: center; align-items: start; }
-  .dhead { grid-column: 2; }
-  .toc { grid-column: 1; grid-row: 1 / span 2; position: sticky; top: calc(var(--bar) + 20px); max-height: calc(100dvh - var(--bar) - 40px); overflow-y: auto; }
-  .toc ol { columns: auto; }
-  .toc summary { list-style: none; cursor: default; }
-  .toc summary::-webkit-details-marker { display: none; }
-  .dmain { grid-column: 2; }
-  .dbar .jump { display: none; }
-}
+/* Chapters: a sheet that slides up, showing the first page of each. */
+.sheet { position: fixed; inset: auto 0 0; width: 100%; max-width: 760px; max-height: 84dvh; margin: 0 auto; padding: 0; border: 0; border-radius: 18px 18px 0 0; background: var(--paper); overflow: hidden auto; overscroll-behavior: contain; box-shadow: 0 -8px 40px rgb(0 0 0 / .25); }
+.sheet[open] { animation: sheet-up .3s cubic-bezier(.2, .9, .3, 1); }
+.sheet.closing { animation: sheet-down .2s ease-in forwards; }
+.sheet::backdrop { background: rgb(43 20 60 / .45); animation: fade .3s; }
+.grab { position: sticky; top: 0; z-index: 1; height: 22px; background: var(--paper); }
+.grab::after { content: ""; position: absolute; inset: 8px calc(50% - 18px) auto; height: 5px; border-radius: 3px; background: rgb(93 21 127 / .3); }
+.thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 12px; padding: 4px 14px calc(var(--bottom) + 16px); }
+.thumbs a { display: block; overflow: hidden; border-radius: 4px; box-shadow: 0 0 0 1px rgb(93 21 127 / .3); transition: scale .2s var(--pop); }
+.thumbs a:active { scale: .94; }
+.thumbs a[aria-current] { box-shadow: 0 0 0 3px var(--grape); }
+.thumbs a:focus-visible { outline-color: var(--grape); box-shadow: none; }
+.thumbs img { width: 100%; background-color: #fff; }
+@keyframes sheet-up { from { translate: 0 100%; } }
+@keyframes sheet-down { to { translate: 0 100%; } }
+@keyframes fade { from { opacity: 0; } }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; transition-duration: .01s !important; }
+  *, *::before, *::after, ::backdrop { animation: none !important; transition-duration: .01s !important; }
   @view-transition { navigation: none; }
 }
