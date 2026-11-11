@@ -439,6 +439,21 @@
    }
   ]
  },
+ "about": {
+  "title": "About",
+  "people": [
+   {
+    "id": "lucas",
+    "name": "Lucas",
+    "text": ""
+   },
+   {
+    "id": "emma",
+    "name": "Emma",
+    "text": ""
+   }
+  ]
+ },
  "sprites": {
   "twig-forked-brown": "plant",
   "mouse-sitting-orange": "animal",
