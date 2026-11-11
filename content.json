@@ -1,0 +1,536 @@
+{
+ "site": {
+  "name": "Lizardi Institutoa",
+  "short_name": "Lizardi",
+  "url": "https://lizardi-institutoa.iverfinne.no",
+  "description": "A picture book and a comic diary about lizards, their poop, and the tiny worlds that live inside of us all."
+ },
+ "book": {
+  "title": "Lizarda and the World Within",
+  "description": "Deep in the forest, there’s a little house. It belongs to a curious scientist – a poop scientist! And from a hole in the garden wall, something small is peeking out…",
+  "spreads": [
+   {
+    "id": "01",
+    "left": "Back cover: mustard background scattered with doodles of smiling microbes, mushrooms, a butterfly, a lizard and two blob creatures high-fiving.",
+    "right": "Front cover: bubbly pink title above Lizarda, a long-tailed brown lizard, walking among sparkles, a snail, mushrooms, poop and a flower. “Lizarda and the world within”"
+   },
+   {
+    "id": "02",
+    "left": "A forest garden: a goat on a mossy hill, purple birds on a birdhouse and a dog asleep in its kennel. “Deep in the forest, there's a little house.”",
+    "right": "A little orange wooden house on a stone base, with a purple spider dangling over its roof and potted plants outside. “This is the house of a curious scientist!”"
+   },
+   {
+    "id": "03",
+    "left": "The scientist, in a lab coat and red glasses, examines poop under a microscope while a rat sits on stacked books. “His house is full of books, papers and mysterious objects.”",
+    "right": "Close-up of giant round red glasses with wide eyes staring at a swirl of poop on a lilac box. “The scientist is a bit unusual. He studies poop. He’s a poop scientist!”"
+   },
+   {
+    "id": "04",
+    "left": "An elephant's back legs and tail, a goat, a rat and a scurrying mouse, with droppings of different shapes and sizes. “He studies poop from different animals”",
+    "right": "The scientist writes notes beside a poop sample under a glass dome, with a black dog and a grey cat nearby. “To learn more about the animal that pooped it!”"
+   },
+   {
+    "id": "05",
+    "left": "A dark grey dog stands smiling with its tail up and a fresh poop behind it. “It might sound silly, but you can actually learn a lot from poop. That’s because poop can tell us what’s going on inside our bodies.”",
+    "right": "A larger view of the same dog with its coiled gut glowing orange inside its body, dotted with small poops. “Poop is made in the gut. And inside the gut – yes, yours too…”"
+   },
+   {
+    "id": "06",
+    "left": "Close-up of the pink coiled gut on a purple background, with small brown bits of poop on its folds. “There's a whole world of little creatures!”",
+    "right": "The pink coils of the gut continue across the page, with one more small brown bit of poop. “They're so small, you can't see them. But they're super important!”"
+   },
+   {
+    "id": "07",
+    "left": "Colourful cartoon microbes float on purple: a green pill-shaped bacterium, a many-armed fungus, a round blue blob and spiky, wiggly shapes. “Welcome to the world within! Here you can find bacteria, fungi and viruses. We call them microbes.”",
+    "right": "Two smiling microbes, one green and one purple, high-five; below, a scowling yellow microbe faces a grumpy pink one. “They work together, and sometimes they don’t. But we all have them in our gut, and we need them to be healthy and poop.”"
+   },
+   {
+    "id": "08",
+    "left": "Seen through an arched window of his house, the scientist holds up a poop sample above a purple stone wall. “What's that?”",
+    "right": "Close-up of the purple stone wall: two small eyes peer out of a dark gap between the stones, among green vines. “Something small is peeking out from a hole in the wall.”"
+   },
+   {
+    "id": "09",
+    "left": "Inside the wall, Lizarda, a brown lizard in a pink nightcap, sits beside leaves in front of the bright opening. “It's Lizarda the lizard! She just woke up. She's groggy and cold”",
+    "right": "Lizarda climbs out of the dark hole in the purple stone wall, head raised, with pink flowers growing below. “The morning sun feels lovely on her scaly skin.”"
+   },
+   {
+    "id": "10",
+    "left": "Lizarda walks through the garden with her pink tongue out, past rocks, mushrooms, plants and a green frog. “When Lizarda has warmed up, she starts to feel hungry. She scutters through the poop scientist’s garden, looking for a snack.”",
+    "right": "Lizarda peers over a grey rock, tongue out, at a big-eyed purple fly sitting on a pink flower; a frog watches. “A little fly has landed on a flower nearby. A perfect morning snack for Lizarda.”"
+   },
+   {
+    "id": "11",
+    "left": "Lizarda leaps across the garden near a stone wall and butterflies; a green slug and a brown moth sit on plates. “Lizarda runs all over the garden, hunting for treats! A juicy slug. A delicious moth.”",
+    "right": "A dark blue spider sits on a plate among garden plants, and Lizarda curls up nibbling a big green leaf. “A spicy spider. And for dessert, a sweet leaf.”"
+   },
+   {
+    "id": "12",
+    "left": "Lizarda lies stretched out on a purple rock, eyes closed and tongue out, with curling grass above and a pink spider below. “After hunting Lizarda is tired and needs to rest a little in the sun. Soon enough though, she's off again to look for dinner.”",
+    "right": "A huge brown dog's face with a pink tongue pokes through grass and pink flowers above Lizarda, who walks along below. “But in the garden there's another animal looking for the very same thing.”"
+   },
+   {
+    "id": "13",
+    "left": "A big dark brown dog leaps forward, tongue out and paws stretched towards Lizarda, who looks up at her wide-eyed. “A poopy brown dog! She wants to eat Lizarda for dinner!”",
+    "right": "The dog trots happily after Lizarda, who sprints away with sweat drops flying, past purple rocks, flowers and a pink butterfly. “Or maybe she just wants to play? Lizarda can't know. Luckily, Lizarda is fast!”"
+   },
+   {
+    "id": "14",
+    "left": "Three scenes on orange show the dog chasing a running, sweating Lizarda in different directions, tongue out and paws reaching. “Poopy dog chases Lizarda all over the garden!”",
+    "right": "Colourful microbes of many shapes float on a purple background with worried, frowning and sweating faces. “When Lizarda is stressed the microbes get stressed too!”"
+   },
+   {
+    "id": "15",
+    "left": "The big dog, mouth open and tongue out, is right behind a small, sweating Lizarda running above some flowers and mushrooms. “Lizarda is getting tired. Poopy dog is still chasing her.”",
+    "right": "Close-up of Lizarda glancing back with limbs spread as her curly tail pops off and floats above her, its cut end orange. “Lizarda has a secret trick… she drops her tail!”"
+   },
+   {
+    "id": "16",
+    "left": "The dog stands on her hind legs tossing the wriggling tail in the air while tailless Lizarda hides behind orange flowers. “Poopy dog starts playing with the tail. Lizarda is safe!”",
+    "right": "Tailless Lizarda climbs a green hill towards a tree at dusk, while a purple bird flies overhead. “The sun is setting, it’s getting cold. Lizarda goes back to her hole to sleep.”"
+   },
+   {
+    "id": "17",
+    "left": "Lizarda sleeps curled among leaves in her hole wearing a pink nightcap, with a moon and stars visible through the opening. “Good night, Lizarda”",
+    "right": "A grassy hill beside a tree at night, dotted with several small brown piles of lizard poop among curly plants. “But during the day, Lizarda has not just eaten. She has pooped a lot too!”"
+   },
+   {
+    "id": "18",
+    "left": "A scientist with poop-shaped brown hair, red glasses, lab coat and green gloves holds up a tiny poop; a dog walks by. “The poop scientist collects the poop.”",
+    "right": "Seen from above, the scientist examines a poop through a pink magnifying glass at a desk while the dog peeks in. “In the lab he studies it.”"
+   },
+   {
+    "id": "19",
+    "left": "The scientist peers through a pink magnifying glass; three bubbles above show a fly, a slug and a bug with curly antennae. “The poop shows that Lizarda has eaten a lot of insects.”",
+    "right": "The scientist jumps for joy with arms and legs spread, eyes closed and smiling, surrounded by sparkles and floating poops. “That's so interesting! The poop scientist can't wait to collect more poop!”"
+   },
+   {
+    "id": "20",
+    "left": "Close-up of the scientist's face in profile with red glasses, resting a hand on a sheet of crayon drawings.",
+    "right": "A cream sheet of paper covered in crayon sketches of Lizarda, a spider and various microbes in pastel colours. “To learn more about Lizarda's life, and the microbes inside her!”"
+   },
+   {
+    "id": "21",
+    "left": "Lizarda sleeps curled up among autumn leaves in a pink nightcap, and a tiny creature in a pink cap sleeps below. “And while the poop scientist studies Lizarda’s poop, Lizarda sleeps.”",
+    "right": "Inside her gut, shown as a magenta space, cheerful colourful microbes of many shapes float about, two of them high-fiving. “In her gut, the microbes are hard at work to make more poop for the next day!”"
+   }
+  ]
+ },
+ "diary": {
+  "title": "The PhD Diary",
+  "description": "Lucas is doing a PhD on wall lizards and the microbes in their gut. This is his diary in comics: lizard hunts in Formentera, crickets wearing backpacks, and the days that were hard.",
+  "cover": "intro-0",
+  "chapters": [
+   {
+    "title": "Intro",
+    "pages": [
+     {
+      "id": "intro-0",
+      "alt": "Lucas holds a lizard on his open palm; below, a long-haired friend in glasses questions him, then gapes in shock as he tears up. Before I started my PhD. I didn't actually know so much about lizards. \"When do lizards wake up in the morning?\" \"I don't know...\" \"What!! How can you not know that!?\" \"Aren't you a lizard scientist!?\""
+     },
+     {
+      "id": "intro-1",
+      "alt": "Bearded Lucas beside his dark dog Dara; below, him as a toddler with a football, a boy in shorts, and an adult under an umbrella. Hello, I'm Lucas. This is my dog, Dara. I was born in Brazil. Moved to Portugal. And finished my studies in a rainy city in Norway. Bergen."
+     },
+     {
+      "id": "intro-2",
+      "alt": "Lucas strolls with his dog dreaming of a PhD, then works with lab flasks; below, cheerful cartoon microbes dance across a dark background. After finishing my masters in molecular biology I knew that at some point I wanted to do a PhD. But I felt I needed more real life experience, so I started working at a small biotech company in Oslo. As a poop scientist. Working with human microbiome research got me hooked on the tiny worlds that live inside of us all. Small, but with a lot to say!"
+     },
+     {
+      "id": "intro-3",
+      "alt": "Lucas and his dog flex their arms confidently; then he frowns at a laptop, sweating; finally he stares wide-eyed at his phone. 2,5 years later, I felt ready for a PhD, and started applying. Mostly to soil microbiome research. I thought that would be my path. I quickly realized landing a PhD was harder than I thought. More than 50 applications. Only a handful of interviews. \"Maybe my profile isn't what anyone is looking for!!\" Then one day I get a call about a position that was completely different from anything I'd done before... With lizards."
+     },
+     {
+      "id": "intro-4",
+      "alt": "Lucas floats wide-eyed among sparkles, surrounded by three dancing lizards and his dog rolling happily on its back. Everything happened very fast. And suddenly I'm a PhD student. Studying animals I know almost nothing about!"
+     },
+     {
+      "id": "intro-5",
+      "alt": "A wall lizard basks on a rock; close-ups show lizards eating an insect and a flower; below, a lizard and its gut both imagine flowers. My project asks whether gut microbiome helps Mediterranean wall lizards shift their diet. From mostly insects. To eating plants."
+     },
+     {
+      "id": "intro-6",
+      "alt": "A lizard in sunglasses reaches for a flower among palm trees; below, one lizard poops into a tube and another drinks from a tube. In May I went to Formentera to collect poop from Podarcis pityusensis. A lizard that happily adds plants to their menu. Those 'samples' then become 'fecal transplants' for their continental cousins, Podarcis muralis. To see whether borrowed microbes change how they digest plants, and what they choose to eat."
+     }
+    ]
+   },
+   {
+    "title": "Formentera Lizard Hunt",
+    "pages": [
+     {
+      "id": "hunt-01",
+      "alt": "Title page: Lucas in T-shirt and shorts holds up a lizard that drops poop pellets into a sample tube, framed by plants and peeking lizards. Formentera Lizard Hunt. 8–12. May 2026."
+     },
+     {
+      "id": "hunt-02",
+      "alt": "Lucas triumphantly lifts a box overhead among curling plants as a lizard strolls by; below, he sticks out his tongue while wrestling tangled thread. Day 1 – The Dry Ice Has Landed! Mission. Arrive in Formentera. Locate the lizards. Charm them to give their poop away. Simple! The dry ice made it! (Small victory!) The sun finally clocked in by late afternoon. And the wind stayed the whole shift, because the universe wanted to test our hooking thread. We were posted up on Francesc Xavier parking lot from 7–9. First crisis of the trip!! The thread we'd brought for the noose was being uncooperative."
+     },
+     {
+      "id": "hunt-03",
+      "alt": "Garazi's serene glowing face sits above six dancing lizards, a lizard reading on a toilet, and a glamorous long-lashed lizard posing amid sparkles. Day 1. Garazi diagnosed it in roughly the time it takes me to tie a shoelace, and swapped us onto a back up. 6 lizards caught! 5 samples. Field discovery: Podarcis pityusensis takes its sweet time defecating, compared to its cousin, P. muralis. They are also, as confirmed in person, extremely pretty."
+     },
+     {
+      "id": "hunt-04",
+      "alt": "Lucas and his dog stare glumly out of a window at the rain while lizards row a boat across flooded grassland below. Day 2 – The Day Formentera Became a Lake. It rained all day. We didn't catch any lizards. Lizards didn't catch us either."
+     },
+     {
+      "id": "hunt-05",
+      "alt": "A smiling sun and swirling wind sit above lizards leaping among shells, while an elderly Lucas in an armchair tells a child his lizard story. Day 3 – Three Locations, a Renaissance! Sunny, windy. The kind of day that lies to you. 10:00 – Beach location. Lizards everywhere. Already caffeinated. They moved like they had been tipped off. Two samples – and a historic moment: I caught my first lizard!! I will be telling my grandchildren."
+     },
+     {
+      "id": "hunt-06",
+      "alt": "Six lizards hold hands among tall grass, Lucas reaches out as three lizards bolt, and one lizard leaves a trail of droppings. Day 3. 13:00 Cropland spot. Highest lizard density on the island. Lining the road walls and the edge of the crop field. Also the most paranoid lizards we'd met, ducking for cover from 3–4 meters away. We grinded out 2 more samples."
+     },
+     {
+      "id": "hunt-07",
+      "alt": "A dog trots away from a fresh poo, and below Lucas leaps for joy among jumping lizards while his dog sits panting happily. Day 3. 14:00 Back to St Francesc Xavier. Someone had trimmed the vegetation. The lizards had read the news and left. Scouted around town and came out empty. 16:00 Back to the cropland. Patience finally rewarded. Twelve lizards. Two of them generous enough to give us two samples. Bless their tiny digestive systems. Day total. 16 lizards! 18 samples!!"
+     },
+     {
+      "id": "hunt-08",
+      "alt": "Lucas and Garazi cross a field under a fierce sun, Lucas and his dog wave off a ferry, then Lucas stands hands on hips. Day 4 – Garazi Goes Home, Lucas Carries On. Real sun, 25°C. We committed fully to the cropland spot. It had earned the loyalty. Morning haul: 8 lizards. Processed them, squeezed out 4 more before Garazi had to leave for the ferry. Drove her to the port. Waved dramatically. Then I returned to the field around 17:00 like a man with unfinished business."
+     },
+     {
+      "id": "hunt-09",
+      "alt": "Two lizards walk in opposite directions with crossed tails forming a heart, and Lucas sprawls arms outstretched beside his dog rolling on its back. Day 4 – 2 More Lizards. Productive, slightly lonely. The cropland and I are basically dating now."
+     },
+     {
+      "id": "hunt-10",
+      "alt": "Lucas stands glumly in swirling wind, a relaxed lizard lounges, Lucas and his dog wait in a car in the rain, and a trophy gleams. Day 5 – The Record!! Last day. It started even windier than the day before. \"I'd already written the disappointing summary in my head.\" But then, by midday: 8 lizards! They were noticeably slower in the morning. Probably because the wind had kept basking the temperature. Turns out it's much easier to noose a chill lizard. Then of course it rained. We waited in the car, and watched the cloud move on. 15. Came back around 15:00 and pulled 7 more. Final tally for the day: 15 lizards!"
+     },
+     {
+      "id": "hunt-11",
+      "alt": "Lucas cheers with a sample tube in each raised hand while his dog holds a tube in its mouth, surrounded by flying tubes and sparkles. Grand Total. 49 lizards. 48 samples. 60 tubes (~100mg/tube). Enough feces to genuinely go wild with the transplants!!"
+     }
+    ]
+   },
+   {
+    "title": "The Heatwave and the Invisible Lizards",
+    "pages": [
+     {
+      "id": "p20",
+      "alt": "Lucas and Garazi stand holding noose poles; below, a large lizard basks on a rock, then a hilly landscape with a small animal peeking up. The Heatwave and the Invisible Lizards. It's the first day of the P. muralis fieldwork. Me and Garazi head out. We're the team that sampled 49 pityusensises in Formentera in May. How hard can its cousin species be? The first site is the hills of Irun."
+     },
+     {
+      "id": "p21",
+      "alt": "Garazi and Lucas walk over a hill with poles under a smirking sun; below, a sweating Lucas squints at twigs and rocks hiding a lizard. Based on Garazi's previous visits, we expected lizards everywhere. Instead, the population is nothing like we imagined. Also we're in the middle of a heatwave. Then there's the camouflage problem. Pityuensis are shiny green and blue. P. muralis are tiny, green brown, and blend with the environment. With my bad eyesight, every rock looks like a lizard and every lizard looks like a rock."
+     },
+     {
+      "id": "p22",
+      "alt": "Lucas walks with a noose pole over his shoulder while Garazi waits behind; then Garazi beams holding a bagged lizard and Lucas stares blankly. We walk a lot, and pass by ruins nearby. We caught five lizards. I mean Garazi caught five. I could already see it coming. I was gonna suck at catching these guys."
+     }
+    ]
+   },
+   {
+    "title": "My Brother the Electrician",
+    "pages": [
+     {
+      "id": "p23",
+      "alt": "A lizard is shown on a scale, beside a ruler and in a tank; below, Lucas frowns at a lamp cable over a cage. My Brother the Electrician. One of my first evening, I come to Ziba to process the freshly caught lizards. Simple. Weigh. Measure. And settle them in. Except each cage has its own UV-lamp and the cable connection doesn't work."
+     },
+     {
+      "id": "p24",
+      "alt": "Lucas lies on the floor tangled in cables as lizards watch from tanks; below, he video-calls his brother on a phone. Two hours later, and I'm lying on the floor among the cables. I have no idea what I'm doing. At 21:00 I call my brother, who's an electrician. \"OK, show me the cables.\" Things PhD-candidates have to know that nobody mentions: • Lizard care. • Microbiology. • Statistics. • Electrical wiring!!"
+     }
+    ]
+   },
+   {
+    "title": "Chasing the Weather",
+    "pages": [
+     {
+      "id": "p25",
+      "alt": "Full-page drawing: a short-haired person with a pole walks up a stone-walled road past two donkeys toward distant houses, while Lucas watches from behind. Chasing the Weather."
+     },
+     {
+      "id": "p26",
+      "alt": "Lucas and Garazi stand on a hillside under a sun sticking out its tongue; below, Lucas imagines lizards dancing on rocks. Sometimes fieldwork is just chasing the weather: checking forecasts, moving plans, waiting for a sunny window. So four days later, Garazi and I come back. The weather is great now. Sunny after days of rain, so they must be hungry and out basking. There are so many nice rocks, perfect lizard real estate!"
+     },
+     {
+      "id": "p27",
+      "alt": "Under a beaming sun, a short-haired companion walks with a noose pole while a sweating Lucas lifts a rock, finding no lizards. We catch only two lizards. We start to get confused... Perfect weather. Hungry lizards. Perfect rocks. Where is everybody?"
+     }
+    ]
+   },
+   {
+    "title": "Should I Change My Prescription",
+    "pages": [
+     {
+      "id": "p28",
+      "alt": "Big glasses with a lizard in each lens; below, Lucas holds an empty noose pole while Antton and Garazi each catch a lizard. Should I Change My Prescription. Day after day of field work, the same pattern. Antton catches 5 lizards. So does Garazi. If I'm lucky, I catch one."
+     },
+     {
+      "id": "p29",
+      "alt": "Lizards step into and flee from dangling nooses; below, Lucas in glasses sweats beside a stone wall with tail-like shapes poking out. Lizards seem to walk calmly into their nooses. My noose dangle in front of lizards who look at it, look at me, and scuttle away. Meanwhile I'm scanning a wall where my colleagues just spotted 3 lizards. I see zero. I start wondering. Is it me or my glasses?"
+     }
+    ]
+   },
+   {
+    "title": "Trapping Myself",
+    "pages": [
+     {
+      "id": "p30",
+      "alt": "Lucas gestures to a ponytailed colleague holding a noose pole by a stone wall; below, he cries into his phone among vine leaves. Trapping Myself. We're about 10 days into fieldwork. It's 14:00, we're heading home at 15:00. My colleague already has three lizards. I have zero. \"I'll look a bit further, near the vineyards\". I lie. Instead, I walk behind the vines, call my girlfriend and cry. \"I don't think I'm fit for this!\""
+     },
+     {
+      "id": "p31",
+      "alt": "On a dark purple background, Lucas dangles limp from a lizard-catching noose, eyes closed, surrounded by five pale lizards. This is unfortunately also a part of a PhD. Moments of insecurity. Out of place. What's the point? I'm an impostor."
+     },
+     {
+      "id": "p32",
+      "alt": "Two long-haired people lift a tiny Lucas out of a hole with a noose pole while a bearded man and a panting dog watch. It's good to have people in your life who can pull you out of these holes. And to learn your own strategies to not fall into them."
+     }
+    ]
+   },
+   {
+    "title": "Homegrown",
+    "pages": [
+     {
+      "id": "p33",
+      "alt": "Starry-eyed Lucas imagines a flowering potted plant; later he frowns, holding a watering can over a planter box with one tiny sprout. Homegrown. I hadn't thought this through, of course... If I'm studying plant preferences in lizards, I should grow some plants myself! That way they are free of pesticides, and have more control over where they come from! 2 months later. The sow thistle is tiny. Nowhere near producing a flower. PhD life..."
+     }
+    ]
+   },
+   {
+    "title": "The First One",
+    "pages": [
+     {
+      "id": "p34",
+      "alt": "Five-step diagram: a noosed lizard, a lizard in a tank, two lizards fed by pipette, and a lizard eyeing a flower before a camera. The First One. The lizards have been through acclimation and then started the antibiotics phase. This is how it goes: Capture. Acclimation. Antibiotics. Transplant. Experiment. ? During a routine morning check, one lizard isn't moving..."
+     },
+     {
+      "id": "p35",
+      "alt": "Lucas's wide-eyed, sweating face looms above a tank where a lizard lies motionless beside a small dish and a dome-shaped hide. This is my first lizard to die. We're not sure why. People say it's normal in animal experiments. ...Should it be?"
+     }
+    ]
+   },
+   {
+    "title": "Too Much Liquid?",
+    "pages": [
+     {
+      "id": "p36",
+      "alt": "A hand holds a lizard as a pipette is placed in its open mouth; below, two lizards lie limp on the ground. Too Much Liquid? Then comes the fecal transplant days. Each lizard get a solution/liquid. Either its own microbes back, or poop from the Formentera, who are better at digesting plants. Over the next few days. Two lizards die."
+     },
+     {
+      "id": "p37",
+      "alt": "A fist holds a gasping lizard beside a set-down pipette; below, a close-up of Lucas's anxious, sweating face. We had some ideas about what could be happening, and choking on the liquid was the number one suspicion. These animals aren't used to taking in that much liquid at once. Then it's confirmed. A fourth one of them starts choking and suffocating right after his transplant, right in front of me. This is the fourth one, and I'm not ready to let go of another."
+     },
+     {
+      "id": "p38",
+      "alt": "A colleague watches Lucas bent over a bench pressing on a tiny lizard; four close-ups show his attempts to revive it. My colleague tells me later I blanked out. And spent 45 minutes trying to do CPR on a lizard. I put my finger on his chest and pushed rhythmically. I held him under warm light. I tried to blow air on him. I tried to pipette liquid out of his throat."
+     },
+     {
+      "id": "p39",
+      "alt": "A full-page drawing of a pale lizard sprawled limp with limbs splayed, surrounded by swirling dashed lines on a mottled purple background. I really tried, but there was nothing I could do. If anything, I wish I could humanely ended his life before, if anything."
+     }
+    ]
+   },
+   {
+    "title": "Reinforcements",
+    "pages": [
+     {
+      "id": "p40",
+      "alt": "Portraits of a white bird, a bearded man and a smiling woman; below, Lucas passes his dog, works at a box, then lies eating pizza. Reinforcements. In the second half of the first experiment, Elsa and Frank join the team. Before, the days went like this: Come home from fieldwork or the lab, completely exhausted. Process all the lizards. And crash on the couch with a frozen pizza."
+     },
+     {
+      "id": "p41",
+      "alt": "Two colleagues examine a lizard in a tank while Lucas flips a pancake in a pan; below, the three stand together smiling. Now, the two of us process, while one cooks a real meal. Someone always has a little energy left. And it goes far beyond dinner. They support me, they make the lab fun. And we brainstorm crazy ideas together. A PhD can be lonely. With these two around, it isn't."
+     }
+    ]
+   },
+   {
+    "title": "Change of Plans: Crickets with Backpacks",
+    "pages": [
+     {
+      "id": "p42",
+      "alt": "A lizard eating pellets and pooping; a hand gripping a lizard that drips with sweat; a dead lizard lying on its back with legs up. Change of Plans: Crickets with Backpacks. The original plan for the experiment was simple on paper: to measure how well the lizards digest plants. We'd control everything going in and coming out. Food and poop. To make sure they ate plants, we planned to force feed them. But after the antibiotics and the transplants, the lizards are very stressed by all the handling, and some have started dying..."
+     },
+     {
+      "id": "p43",
+      "alt": "Lucas and a bearded colleague talk over a lizard tank; below, a large cricket carries a lump of paste on its back. Force feeding them on top of that, is not an option. We need to find a way to get plants into them without needing to pick them up. The solution starts as a joke. \"What if we just put the paste on the crickets' backs?\" Why not? So that's what we do. The control lizards get plain crickets, and the others get crickets wearing a little backpack of alfalfa-paste. And it works, kind of!"
+     }
+    ]
+   },
+   {
+    "title": "Backpack Removal Specialist",
+    "pages": [
+     {
+      "id": "p44",
+      "alt": "A lizard grabs a backpack-wearing cricket, shakes the paste off and swallows it; Lucas glares as a smug lizard holds two crickets. Backpack Removal Specialist. A few days into the backpack era, we notice something. Some of the lizards have figured it out. They grab the cricket. Give it a good shake. And the alfalfa paste flies off its back. Then they eat the clean cricket. We're outsmarted by a lizard."
+     }
+    ]
+   },
+   {
+    "title": "The Last Meal",
+    "pages": [
+     {
+      "id": "p45",
+      "alt": "Close-ups of fingers opening a lizard's mouth and placing paste inside; below, Lucas looks sadly at a sweating lizard held in his hand. The Last Meal. At the end of experiment 1, we need at least one properly controlled measurement. We need to make sure they eat plants. So for the final days, we feed them alfalfa paste directly. Gently opening their mouths. And placing a little alfalfa paste inside until they swallow it. It's quick and controlled. But it's not pretty to watch. It's one of those moments where you feel the weight of what the experiment asks of them."
+     }
+    ]
+   },
+   {
+    "title": "The Cricket Exodus",
+    "pages": [
+     {
+      "id": "p46",
+      "alt": "Two cricket boxes marked 300; shocked Lucas beside a Megapack box showing a muscular cricket; crickets leaping out of an open box. The Cricket Exodus. I usually buy 600 crickets, which arrive in boxes of 300. They're easy to handle and easy to move into the cricket house. 300. 300. This time the order arrives in one big box of 1000!! Megapack. While I'm transferring them into their new house, a lot of them see their chance. There's a cricket exodus all over the lab. One month later, I'm still finding crickets in weird places..."
+     }
+    ]
+   },
+   {
+    "title": "Round Two, Way Faster",
+    "pages": [
+     {
+      "id": "p47",
+      "alt": "Lucas and a long-haired bearded man carry noose poles over rocks; below, Lucas fumbles his noose while the other holds up a caught lizard. Round Two, Way Faster. September brings the second field season this time for the behavioral experiment. And it goes way quicker than in July. After one week we have 20 lizards. After 2 weeks, 39. I'm not great at catching them, but I'm getting better. Elsa and Frank are amazing. Especially Frank, who is a true superhero catcher."
+     }
+    ]
+   },
+   {
+    "title": "The Case of Lizard No 16",
+    "pages": [
+     {
+      "id": "p48",
+      "alt": "Lucas, hand on chin, ponders two lizards in one cage; below he squints suspiciously at two upright lizards holding sheets like a police line-up. The Case of Lizard No 16. I'm feeding the lizards one day when I realize. There are two lizards in the same cage. One of them has tried to escape, and jumped into another cage. But which one is the intruder? I play detective, measuring weights and body length and checking them against our records. Case solved: it's No.16! He goes back to his box."
+     }
+    ]
+   },
+   {
+    "title": "Freedom Times Three",
+    "pages": [
+     {
+      "id": "p49",
+      "alt": "Lucas peers into an empty cage labelled No.16; a lizard walks off carrying a bindle; two missing-lizard posters hang on a wall. Freedom Times Three. It's acclimation week for experiment 2. I open No.16's cage, and he's gone again. No.16. This time, he's not in any other cage. Where is he living now? We have no idea. One day he might return. Then, I find another empty cage. Two lizards are gone. Missing. Miss."
+     },
+     {
+      "id": "p50",
+      "alt": "Lucas holds a lizard, which wriggles out of his hands and sprints away; below, he stands with a noose pole and a caught lizard. Then, the same day, I'm sampling poop from a third lizard. Suddenly he slips out of my hands. There he goes. Freedom. 3 lizards to replace, and Elsa and Frank are leaving for the weekend. So I go back to the field alone, without my good catchers. But I'm motivated. This time I'll make it. And somehow I do."
+     }
+    ]
+   },
+   {
+    "title": "Putting Makeup on a Lizard",
+    "pages": [
+     {
+      "id": "p51",
+      "alt": "A film camera points at three dancing lizards; below, Lucas, winking with tongue out, dabs paint on a squirming lizard with a brush. Putting Makeup on a Lizard. For the behaviour experiment, we're going to film the lizards and track how they move. For the tracking to work, the lizards need to get a little paint mark. The painting itself is the fun part. Hold a squirmy lizard, dab a dot. One by one, the lizards get their little blue and pink marks."
+     }
+    ]
+   },
+   {
+    "title": "I Do Care About Them",
+    "pages": [
+     {
+      "id": "p52",
+      "alt": "Lucas waves at a laptop video call with four faces; below, a cheerful Lucas holds a noose pole beside a lizard basking among flowers. I Do Care About Them. It's my turn to present an update at a meeting of the holobiont network I'm a part of. My plan is to just show pictures from this summer's fieldwork. It's meant to be fun. Somehow it gets very serious."
+     },
+     {
+      "id": "p53",
+      "alt": "Lucas speaks sadly at his laptop; two colleagues, one long-haired and one with glasses, respond; a close-up shows Lucas sweating and downcast. Someone asks about the welfare of the animals. My answer comes out instantly and honestly. \"I do care a lot about them. And I've cried many times thinking about them.\" Afterwards, two colleagues reach out. \"Poor Lucas. He shouldn't be doing this\". \"If you want, we can have a chat and share our experience with animal experiments.\" I left the meeting feeling a bit ashamed. I worry I came across as sad and off."
+     },
+     {
+      "id": "p54",
+      "alt": "Lucas faces four cages, each holding a lizard; below, a close-up of his worried face beside a lizard gripped in a hand. But I'm proud that I didn't hide any emotions and thoughts about the project. I was honest that I question a lot of the ethics behind what we're doing, and if I knew what I know now, I wouldn't have accepted the project."
+     },
+     {
+      "id": "p55",
+      "alt": "On a dark purple background, a tall stack of stone-like thought bubbles balances on Lucas's head, weighing him down at the bottom. There are stages that were skipped unglamorous, but important ones. We should have optimized the fecal transplant protocol. Before adding complex biological questions on top of it. It's too much to figure out during one PhD. And too much to justify the pain we're causing the lizards. What will this mean for lizards. Or for humans. Most likely ... not much. So why am I doing this?"
+     }
+    ]
+   }
+  ]
+ },
+ "sprites": {
+  "twig-forked-brown": "plant",
+  "mouse-sitting-orange": "animal",
+  "grass-curl-green": "plant",
+  "rocks-stacked-purple": "rock",
+  "snail-pink-shell": "bug",
+  "ring-teal": "ring",
+  "ring-lime": "ring",
+  "microbe-star-yellow-pink": "microbe",
+  "microbe-dancing-pair-leaning": "microbe",
+  "ring-small-mauve": "ring",
+  "microbe-cilia-brown-blue": "microbe",
+  "microbe-star-magenta": "microbe",
+  "microbe-branched-blue": "microbe",
+  "slug-sleeping-mustard-pink-hat": "bug",
+  "microbe-pill-pink-tufted": "microbe",
+  "microbe-spiral-yellow": "microbe",
+  "microbe-rods-mustard": "microbe",
+  "microbe-star-ochre-green": "microbe",
+  "microbe-star-orange-magenta": "microbe",
+  "microbe-rod-knobbed-pink": "microbe",
+  "twig-with-leaves-grey": "plant",
+  "snail-upright-magenta": "bug",
+  "grass-fork-green": "plant",
+  "flower-pink-on-stem": "plant",
+  "microbe-spiral-green": "microbe",
+  "mushrooms-orange-purple-outline": "plant",
+  "sprout-curl-olive-purple": "plant",
+  "poop-on-green-plant": "poop",
+  "stem-bent-green": "plant",
+  "mushrooms-pink-cap": "plant",
+  "ring-peach": "ring",
+  "slug-hat-lavender": "bug",
+  "lizard-stretching": "lizard",
+  "poop-small-ragged": "poop",
+  "slug-pale-big-eye": "bug",
+  "leaf-oak-mustard": "plant",
+  "bulb-magenta": "plant",
+  "bug-green-sitting": "bug",
+  "flower-head-pink": "plant",
+  "branch-stump-brown": "plant",
+  "butterfly-magenta": "bug",
+  "poop-large-brown": "poop",
+  "sprig-buds-olive": "plant",
+  "bug-pink-round": "bug",
+  "grass-bent-bright-green": "plant",
+  "microbe-dancing-pair-upright": "microbe",
+  "microbe-rod-teal-pili": "microbe",
+  "flower-head-orange": "plant",
+  "seed-pod-brown": "plant",
+  "worm-thin-brown": "bug",
+  "worm-coiled-brown": "bug",
+  "cat-grey-purple": "animal",
+  "grass-arch-green": "plant",
+  "flower-head-blue": "plant",
+  "lizard-walking-tongue-out": "lizard",
+  "fly-purple-front": "bug",
+  "frog-green": "animal",
+  "shrub-buds-mauve": "plant",
+  "lizard-leaping": "lizard",
+  "squirrel-orange-leaping": "animal",
+  "seedling-green": "plant",
+  "stone-wall-purple": "rock",
+  "slug-big-yellow-green": "bug",
+  "beetle-orange-small": "bug",
+  "slug-hat-green": "bug",
+  "butterfly-orange": "bug",
+  "spider-teal": "bug",
+  "fern-curls-lime": "plant",
+  "flowers-pink-three-stems": "plant",
+  "fly-blue-top-view": "bug",
+  "branch-blossoms-pink": "plant",
+  "lizard-upside-down": "lizard",
+  "lizard-running": "lizard",
+  "microbe-branched-magenta": "microbe",
+  "microbe-chain-blue": "microbe",
+  "microbe-budding-yellow": "microbe",
+  "microbe-spiral-green-2": "microbe",
+  "flowers-purple-pair": "plant",
+  "leaf-oak-green": "plant",
+  "mushrooms-orange": "plant",
+  "grass-bent-dark-olive": "plant",
+  "weed-spiky-olive": "plant",
+  "mushrooms-trumpet-terracotta": "plant",
+  "bird-purple-flying": "animal",
+  "slug-hat-orange": "bug",
+  "bird-purple-perched": "animal",
+  "sprout-curl-tall-green": "plant",
+  "poop-log-olive": "poop",
+  "poop-tiny": "poop",
+  "poop-tiny-tall": "poop",
+  "stem-forked-green-buds": "plant",
+  "snail-yellow-brown-shell": "bug"
+ }
+}
