@@ -302,6 +302,7 @@
    },
    {
     "title": "The First One",
+    "quiet": true,
     "pages": [
      {
       "id": "p34",
@@ -315,6 +316,7 @@
    },
    {
     "title": "Too Much Liquid?",
+    "quiet": true,
     "pages": [
      {
       "id": "p36",
@@ -371,6 +373,7 @@
    },
    {
     "title": "The Last Meal",
+    "quiet": true,
     "pages": [
      {
       "id": "p45",
@@ -429,6 +432,7 @@
    },
    {
     "title": "I Do Care About Them",
+    "quiet": true,
     "pages": [
      {
       "id": "p52",
