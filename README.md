@@ -10,10 +10,10 @@ There is no text or design of our own on the pages; the artwork is the interface
 
 | | Phone | Mouse and keyboard |
 |---|---|---|
-| Turn a page | swipe, or tap the left or right edge | arrow keys, space, the arrow buttons |
+| Turn a page | swipe, or tap the left or right edge | arrow keys, space, the arrows |
 | Show or hide the controls | tap the middle | move the mouse |
-| Put the book away | pull it down, or tap × | Esc, or click × |
-| Chapters in the diary | tap the grid button; drag the sheet down to dismiss | click the grid button |
+| Put the book away | pull it down, or tap the down arrow | Esc, or click the down arrow |
+| Chapters in the diary | tap the grid; drag the sheet down to dismiss | click the grid |
 
 Both readers remember where you stopped. Pages you have opened stay available offline.
 
