@@ -21,7 +21,7 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 /* It behaves like an app: no pinch or double-tap zoom, no text selection, no long-press menus. */
-html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; touch-action: pan-x pan-y; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; touch-action: pan-x pan-y; overscroll-behavior: none; } /* and no rubber-band bounce past the ends */
 body, h1, h2, ol, figure { margin: 0; padding: 0; }
 body { -webkit-user-select: none; user-select: none; }
 a { -webkit-touch-callout: none; }
@@ -34,8 +34,10 @@ img { max-width: 100%; height: auto; -webkit-touch-callout: none; -webkit-user-s
 
 /* ---------- The collage: the cut-out drawings behind everything ---------- */
 
-/* assets/wall.js scatters them and slides each one past at its own speed as the page scrolls. */
-.wall { position: fixed; inset: 0; overflow: hidden; }
+/* assets/wall.js scatters them and slides each one past at its own speed as the page scrolls.
+   The layer fills the window but is sticky, not fixed: it belongs to the page, so if a browser lets
+   the page bounce past its end the drawings go with it instead of hanging over the bare edge. */
+.wall { position: sticky; top: 0; height: 100dvh; margin-bottom: -100dvh; overflow: hidden; }
 /* Drawings fade into the background at the top and bottom edge instead of being cut off there. */
 .wall::before, .wall::after { content: ""; position: absolute; z-index: 1; left: 0; right: 0; height: 72px; pointer-events: none; }
 .wall::before { top: 0; background: linear-gradient(var(--bg), transparent); }
@@ -62,8 +64,9 @@ img { max-width: 100%; height: auto; -webkit-touch-callout: none; -webkit-user-s
 
 /* ---------- The shelf: the book and the diary, lying on the collage ---------- */
 
-.home { --bg: var(--garden); background: var(--bg); }
-.shelf { position: relative; z-index: 1; min-height: 100dvh; display: flex; align-items: center; justify-content: center; gap: clamp(24px, 7vw, 96px); padding: calc(var(--top) + 24px) calc(var(--right) + 24px) calc(var(--bottom) + 24px) calc(var(--left) + 24px); pointer-events: none; }
+/* One screen that never scrolls or bounces. A swipe stirs the collage instead (assets/wall.js). */
+.home { --bg: var(--garden); background: var(--bg); height: 100dvh; overflow: hidden; touch-action: none; }
+.shelf { position: relative; z-index: 1; height: 100%; display: flex; align-items: center; justify-content: center; gap: clamp(24px, 7vw, 96px); padding: var(--top) var(--right) var(--bottom) var(--left); pointer-events: none; }
 .work { position: relative; flex: none; height: min(64dvh, 40vw); overflow: hidden; pointer-events: auto; box-shadow: 0 1px 0 rgb(0 0 0 / .2), 10px 14px 0 rgb(0 0 0 / .2); transition: scale .25s var(--pop), rotate .4s var(--pop); animation: arrive .5s var(--pop) backwards; touch-action: manipulation; }
 .work img, .work picture { width: 100%; height: 100%; }
 .work.book { aspect-ratio: 1288 / 1820; rotate: -4deg; border-radius: 3px 9px 9px 3px; }
@@ -74,12 +77,12 @@ img { max-width: 100%; height: auto; -webkit-touch-callout: none; -webkit-user-s
 .work:focus-visible { outline-color: #fff; }
 @media (hover: hover) { .work:hover { rotate: 0deg; } }
 @keyframes arrive { from { opacity: 0; scale: .8; } }
-/* Upright phone: one below the other, each big enough to enjoy; scrolling down to the diary stirs the collage. */
+/* Upright phone: one above the other, corner to corner. */
 @media (max-aspect-ratio: 1/1) {
-  .shelf { flex-direction: column; justify-content: flex-start; gap: 9vh; padding-block: calc(var(--top) + 10vh) calc(var(--bottom) + 14vh); }
-  .work { height: auto; width: min(72vw, 46vh); }
-  .work.book { align-self: flex-start; margin-left: 5vw; }
-  .work.diary { align-self: flex-end; margin-right: 5vw; }
+  .shelf { flex-direction: column; gap: 0; }
+  .work { height: auto; width: min(60vw, 35dvh); }
+  .work.book { align-self: flex-start; margin-left: calc(50% - min(60vw, 35dvh) * .76); }
+  .work.diary { align-self: flex-end; margin-right: calc(50% - min(60vw, 35dvh) * .76); margin-top: -4%; }
 }
 
 /* ---------- Controls: bare glyphs, no plates and no shadows ---------- */
@@ -144,18 +147,18 @@ img { max-width: 100%; height: auto; -webkit-touch-callout: none; -webkit-user-s
 .diary .wall { pointer-events: none; }
 .diary .sprite { animation: none; filter: grayscale(1) sepia(1) hue-rotate(225deg) saturate(3) contrast(.8) brightness(1.02); }
 
-.strip { position: relative; z-index: 1; max-width: 760px; margin-inline: auto; padding: calc(var(--top) + 46px) 0 calc(var(--bottom) + 30vh); touch-action: pan-y; }
+.strip { position: relative; z-index: 1; max-width: 760px; margin-inline: auto; padding-bottom: calc(var(--bottom) + 30vh); touch-action: pan-y; }
 .chapter + .chapter { margin-top: clamp(120px, 34vw, 220px); } /* a window onto the collage between chapters */
 .page img { width: 100%; background-color: #fff; }
 @media (min-width: 800px) {
-  .strip { padding-top: calc(var(--top) + 70px); }
+  .strip { padding-top: 24px; }
   .page + .page { margin-top: 16px; }
   .page img { border-radius: 2px; }
 }
 
 /* A bar in the diary's ink. It slides away when you read on and comes back when you scroll up or tap.
-   The part behind the status bar stays, so the clock stays readable. */
-.bar { position: fixed; z-index: 2; inset: 0 0 auto; display: flex; align-items: flex-end; justify-content: space-between; height: calc(var(--top) + 46px); padding: 0 calc(var(--right) + 2px) 1px calc(var(--left) + 2px); background: var(--grape); color: var(--paper); transition: translate .3s cubic-bezier(.2, .8, .3, 1); }
+   Sticky like the collage, so it stays with the page. */
+.bar { position: sticky; z-index: 2; top: 0; display: flex; align-items: flex-end; justify-content: space-between; height: calc(var(--top) + 46px); padding: 0 calc(var(--right) + 2px) 1px calc(var(--left) + 2px); background: var(--grape); color: var(--paper); transition: translate .3s cubic-bezier(.2, .8, .3, 1); }
 .quiet .bar { translate: 0 -46px; }
 .quiet .bar .ic { opacity: 0; visibility: hidden; transition: opacity .2s, visibility 0s .2s; }
 .bar .progress { position: absolute; inset: 100% 0 auto; height: 3px; pointer-events: none; }
