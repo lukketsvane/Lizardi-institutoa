@@ -259,7 +259,7 @@ def diary():
 
 def about():
     people = "\n".join(
-        f'<section class="person" id="{p["id"]}">{face(p, "../", "")}<h2>{e(p["name"])}</h2>'
+        f'<section class="person" id="{p["id"]}">{face(p, "../", "")}<h2>{e(p["name"])}</h2><p class="role">{e(p["role"])}</p>'
         + "".join(f"<p>{e(par)}</p>" for par in p["text"].split("\n\n") if par) + "</section>"
         for p in ABOUT["people"]
     )
