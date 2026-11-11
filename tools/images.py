@@ -10,7 +10,8 @@ Expected layout of the originals folder (PNG exports):
     sprites/snail-pink.png ...     cut-out drawings with transparency
 
 Writes assets/book, assets/diary, assets/sprites and assets/meta.json
-(sizes, edge colours and tiny inline previews that tools/build.py needs). Existing, up-to-date
+(sizes, edge colours and tiny inline previews that tools/build.py needs),
+plus the app icons, favicon.ico and the link-preview image. Existing, up-to-date
 outputs are skipped. Needs Pillow >= 11.3 (pip install pillow).
 """
 import base64
@@ -26,6 +27,8 @@ ASSETS = ROOT / "assets"
 BOOK_WIDTHS = (480, 1280, 2400)
 PAGE_AVIF_WIDTHS = (800, 1200, 1600)  # 2x phones and plain desktops, 3x phones, retina desktops and tablets
 PAGE_WEBP_WIDTH = 1000  # fallback for browsers without AVIF
+PAGE_THUMB_WIDTH = 240  # chapter picker
+ICON_SPRITE, ICON_COLOUR = "lizard-stretching", "#8d76ad"  # Lizarda, on the lilac of her wall
 
 
 def stale(src, out):
@@ -82,6 +85,7 @@ def diary(src_dir, meta):
     for src in sorted(src_dir.glob("*.png")):
         jobs = [(out_dir / f"{src.stem}-{w}.avif", w, "AVIF", {"quality": 50, "speed": 4}) for w in PAGE_AVIF_WIDTHS]
         jobs.append((out_dir / f"{src.stem}-{PAGE_WEBP_WIDTH}.webp", PAGE_WEBP_WIDTH, "WEBP", {"quality": 62, "method": 6}))
+        jobs.append((out_dir / f"{src.stem}-{PAGE_THUMB_WIDTH}.webp", PAGE_THUMB_WIDTH, "WEBP", {"quality": 60, "method": 6}))
         im = flatten(Image.open(src))
         meta["diary"][src.stem] = {"w": im.width, "h": im.height, "lq": placeholder(im)}
         for out, w, fmt, opts in jobs:
@@ -90,24 +94,55 @@ def diary(src_dir, meta):
                 print(out.relative_to(ROOT))
 
 
+def cutout(src):
+    """A drawing trimmed to its edges, without the stray faint pixels around it
+    (they show up as a haze on light backgrounds)."""
+    im = Image.open(src).convert("RGBA")
+    alpha = im.getchannel("A")
+    near_solid = alpha.point(lambda a: 255 if a > 110 else 0).filter(ImageFilter.MaxFilter(15))
+    im.putalpha(ImageChops.multiply(alpha, near_solid))
+    return im.crop(im.getbbox())
+
+
 def sprites(src_dir, meta):
     out_dir = ASSETS / "sprites"
     out_dir.mkdir(parents=True, exist_ok=True)
     for src in sorted(src_dir.glob("*.png")):
-        im = Image.open(src).convert("RGBA")
-        # Keep only what is on or right next to the solid drawing: stray faint pixels
-        # further out show up as a haze on light backgrounds.
-        alpha = im.getchannel("A")
-        near_solid = alpha.point(lambda a: 255 if a > 110 else 0).filter(ImageFilter.MaxFilter(15))
-        im.putalpha(ImageChops.multiply(alpha, near_solid))
-        box = im.getbbox()
-        if box:
-            im = im.crop(box)
+        im = cutout(src)
         meta["sprites"][src.stem] = {"w": im.width, "h": im.height}
         out = out_dir / f"{src.stem}.webp"
         if stale(src, out):
             im.save(out, "WEBP", quality=88, alpha_quality=90, method=6)
             print(out.relative_to(ROOT))
+
+
+def icons(sprite_dir):
+    """Home-screen icons and the favicon: one drawing centred on one colour."""
+    art = cutout(sprite_dir / f"{ICON_SPRITE}.png")
+
+    def icon(size, margin):
+        figure = art.copy()
+        figure.thumbnail((round(size * (1 - 2 * margin)),) * 2, Image.LANCZOS)
+        im = Image.new("RGBA", (size, size), ICON_COLOUR)
+        im.alpha_composite(figure, ((size - figure.width) // 2, (size - figure.height) // 2))
+        return im.convert("RGB")
+
+    out_dir = ASSETS / "icons"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    icon(180, 0.1).save(out_dir / "apple-touch-icon.png", optimize=True)
+    icon(192, 0.1).save(out_dir / "icon-192.png", optimize=True)
+    icon(512, 0.1).save(out_dir / "icon-512.png", optimize=True)
+    icon(512, 0.22).save(out_dir / "icon-maskable-512.png", optimize=True)  # Android may crop it to a circle
+    icon(48, 0.04).save(ROOT / "favicon.ico", sizes=[(16, 16), (32, 32), (48, 48)])
+    print("icons")
+
+
+def link_preview(cover):
+    """The picture shown when the address is shared: the title on the front cover."""
+    im = Image.open(cover).convert("RGB")
+    w, h = im.size
+    im.crop((round(w * 0.5), round(h * 0.093), w, round(h * 0.093 + w * 0.5 * 630 / 1200))).resize((1200, 630), Image.LANCZOS).save(
+        ASSETS / "og.jpg", quality=84, optimize=True)
 
 
 def main():
@@ -120,7 +155,10 @@ def main():
         if (originals / key).is_dir():
             meta[key] = {}
             fn(originals / key, meta)
-    ASSETS.mkdir(exist_ok=True)
+    if (originals / "sprites" / f"{ICON_SPRITE}.png").exists():
+        icons(originals / "sprites")
+    if (originals / "book" / "01.png").exists():
+        link_preview(originals / "book" / "01.png")
     meta_path.write_text(json.dumps(meta, indent=1, sort_keys=True) + "\n")
 
 

@@ -1,0 +1,28 @@
+{
+ "name": "Lizardi Institutoa",
+ "short_name": "Lizardi",
+ "description": "A picture book and a comic diary about lizards, their poop, and the tiny worlds that live inside of us all.",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#c48c33",
+ "theme_color": "#c48c33",
+ "icons": [
+  {
+   "src": "assets/icons/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "assets/icons/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  },
+  {
+   "src": "assets/icons/icon-maskable-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}
