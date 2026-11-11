@@ -141,11 +141,12 @@ def page_picture(page, root, sizes, eager=False, alt=None):
     )
 
 
-def wall(root, cover):
-    """The background collage; assets/wall.js scatters the drawings and moves them with the scrolling."""
+def wall(root, cover, stir=""):
+    """The background collage; assets/wall.js scatters the drawings and moves them with the scrolling
+    (or, with stir, with a swipe, where the page itself does not scroll)."""
     tilting = ("bug", "poop", "lizard", "microbe")  # these may lie at any angle; plants and animals stay upright
     sprites = [[name, M["sprites"][name]["w"], M["sprites"][name]["h"], int(kind in tilting)] for name, kind in SPRITES.items()]
-    return (f'<div class="wall" aria-hidden="true" data-src="{root}assets/sprites/" data-cover="{cover}" '
+    return (f'<div class="wall" aria-hidden="true" {stir} data-src="{root}assets/sprites/" data-cover="{cover}" '
             f"data-sprites='{json.dumps(sprites, separators=(',', ':'))}'></div>")
 
 
@@ -161,10 +162,10 @@ def home():
     first_page = {p["id"]: p for ch in DIARY["chapters"] for p in ch["pages"]}[DIARY["cover"]]
     return head(SITE["name"], SITE["description"], "", GARDEN) + f"""<body class="home">
 <h1 class="vh">{e(SITE["name"])}</h1>
-{wall("", 0.9)}
+{wall("", 0.9, "data-stir")}
 <main class="shelf">
 <a class="work book" href="book/" aria-label="{e(BOOK["title"])}"><img src="assets/book/{cover}-1280.webp" width="1280" height="{round(1280 * m["h"] / m["w"])}" alt="" fetchpriority="high"></a>
-<a class="work diary" href="diary/" aria-label="{e(DIARY["title"])}">{page_picture(first_page, "", "(max-aspect-ratio: 1/1) 72vw, 31vw", eager=True, alt="")}</a>
+<a class="work diary" href="diary/" aria-label="{e(DIARY["title"])}">{page_picture(first_page, "", "(max-aspect-ratio: 1/1) 60vw, 31vw", eager=True, alt="")}</a>
 </main>
 <script type="module" src="assets/wall.js?v={V}"></script>
 </body>
