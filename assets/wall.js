@@ -65,8 +65,20 @@ addEventListener('scroll', move, { passive: true });
 // and it glides on for a moment after the finger lifts.
 if ('stir' in wall.dataset) {
   let last = null, speed = 0, gliding = 0;
+  // One face looks out of the corner. Stir far enough and the other takes its place; the first one
+  // (Lucas) is there to begin with and stays about three times as long.
+  const faces = [...document.querySelectorAll('.faces a')];
+  const stay = () => (faces[0].classList.contains('on') ? 1300 : 450) * (0.7 + Math.random() * 0.6);
+  let stirred = 0, enough = faces.length > 1 ? stay() : Infinity;
+  const stir = by => {
+    nudge += by;
+    if ((stirred += Math.abs(by)) < enough) return;
+    for (const face of faces) face.classList.toggle('on');
+    stirred = 0;
+    enough = stay();
+  };
   const glide = () => {
-    nudge += speed;
+    stir(speed);
     speed *= 0.94;
     place();
     gliding = Math.abs(speed) > 0.3 ? requestAnimationFrame(glide) : 0;
@@ -79,7 +91,7 @@ if ('stir' in wall.dataset) {
   addEventListener('pointermove', e => {
     if (last === null) return;
     speed = last - e.clientY;
-    nudge += speed;
+    stir(speed);
     last = e.clientY;
     move();
   });
@@ -88,7 +100,7 @@ if ('stir' in wall.dataset) {
     last = null;
     if (!calm.matches) gliding = requestAnimationFrame(glide);
   });
-  addEventListener('wheel', e => { nudge += e.deltaY; move(); }, { passive: true });
+  addEventListener('wheel', e => { stir(e.deltaY); move(); }, { passive: true });
 }
 
 // A tap you can feel. iPhones have no vibration for web pages, but flipping a switch gives a small
