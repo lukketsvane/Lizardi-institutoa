@@ -446,7 +446,25 @@
     "id": "lucas",
     "name": "Lucas Padilha",
     "role": "Research",
-    "text": "Lucas is a PhD student in Antton Alberdi's group at the Center for Evolutionary Hologenomics, University of Copenhagen, where he studies how gut microbes may help Mediterranean wall lizards change what they eat. He was born in Brazil, moved to Portugal and finished his studies in Bergen. The diary follows his fieldwork and experiments."
+    "text": "Lucas is a PhD student in Antton Alberdi's group at the Center for Evolutionary Hologenomics, University of Copenhagen, where he studies how gut microbes may help Mediterranean wall lizards change what they eat. He was born in Brazil, moved to Portugal and finished his studies in Bergen. The diary follows his fieldwork and experiments.",
+    "links": [
+     {
+      "label": "Google Scholar",
+      "url": "https://scholar.google.com/citations?user=CIeamYsAAAAJ"
+     },
+     {
+      "label": "Alberdi group, University of Copenhagen",
+      "url": "https://www.alberdilab.dk/members.html"
+     },
+     {
+      "label": "EHItk: a toolkit for accessing Earth Hologenome Initiative data resources",
+      "url": "https://doi.org/10.1093/bioadv/vbag199"
+     },
+     {
+      "label": "Custom scoring based on ecological topology of gut microbiota associated with cancer immunotherapy outcome",
+      "url": "https://www.cell.com/cell/fulltext/S0092-8674(24)00538-5"
+     }
+    ]
    },
    {
     "id": "ida",
