@@ -207,7 +207,6 @@ img { max-width: 100%; height: auto; -webkit-touch-callout: none; -webkit-user-s
 .person h2 { margin-top: 10px; font-size: 1.375rem; line-height: 1.25; text-wrap: balance; }
 .person p { margin: .7em 0 0; text-align: left; }
 .person h2, .person p { -webkit-user-select: text; user-select: text; }
-.person .role { margin-top: 2px; text-align: center; opacity: .75; }
 .links { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .6em 1em; margin: .9em 0 0; padding: 0; list-style: none; text-align: left; font-size: .9375rem; line-height: 1.35; }
 .links li { flex: 0 0 100%; }
 .links .row { flex: none; } /* short links share a line, pushed to its two ends */
