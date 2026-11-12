@@ -439,6 +439,23 @@
    }
   ]
  },
+ "about": {
+  "title": "About",
+  "people": [
+   {
+    "id": "lucas",
+    "name": "Lucas Padilha",
+    "role": "Research",
+    "text": ""
+   },
+   {
+    "id": "ida",
+    "name": "Ida Eva Smiseth Neverdahl",
+    "role": "Drawings",
+    "text": ""
+   }
+  ]
+ },
  "sprites": {
   "twig-forked-brown": "plant",
   "mouse-sitting-orange": "animal",
