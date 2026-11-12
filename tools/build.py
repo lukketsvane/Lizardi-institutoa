@@ -222,7 +222,8 @@ def shelf_v1():
 
 
 def shelf_v2():
-    return shelf_variant("v2")
+    # Friezes: the book and the diary stand side by side even on a phone, so the diary is under half as wide.
+    return shelf_variant("v2").replace('sizes="(max-aspect-ratio: 1/1) 60vw, 31vw"', 'sizes="(max-aspect-ratio: 1/1) 46vw, 31vw"')
 
 
 # ---------------------------------------------------------------- the picture book
