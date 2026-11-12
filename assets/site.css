@@ -66,7 +66,7 @@ img { max-width: 100%; height: auto; -webkit-touch-callout: none; -webkit-user-s
 
 /* One screen that never scrolls or bounces. A swipe stirs the collage instead (assets/wall.js). */
 .home { --bg: var(--garden); background: var(--bg); height: 100dvh; overflow: hidden; touch-action: none; }
-.shelf { position: relative; z-index: 1; height: 100%; display: flex; align-items: center; justify-content: center; gap: clamp(24px, 7vw, 96px); padding: var(--top) var(--right) var(--bottom) var(--left); pointer-events: none; }
+.shelf { position: relative; z-index: 1; height: 100%; overflow: clip; display: flex; align-items: center; justify-content: center; gap: clamp(24px, 7vw, 96px); padding: var(--top) var(--right) var(--bottom) var(--left); pointer-events: none; }
 .work { position: relative; flex: none; height: min(64dvh, 40vw); overflow: hidden; pointer-events: auto; box-shadow: 0 1px 0 rgb(0 0 0 / .2), 10px 14px 0 rgb(0 0 0 / .2); transition: scale .25s var(--pop), rotate .4s var(--pop); animation: arrive .5s var(--pop) backwards; touch-action: manipulation; }
 .work img, .work picture { width: 100%; height: 100%; }
 .work.book { aspect-ratio: 1288 / 1820; rotate: -4deg; border-radius: 3px 9px 9px 3px; }
@@ -80,9 +80,10 @@ img { max-width: 100%; height: auto; -webkit-touch-callout: none; -webkit-user-s
 /* One of them looks out from a free corner: the way in to the page about them. Mostly Lucas;
    now and then, as the collage is stirred, Ida takes his place (assets/wall.js). */
 .faces { position: absolute; left: calc(var(--left) + 12px); bottom: calc(var(--bottom) + 10px); display: grid; align-items: end; animation: arrive .5s var(--pop) .16s backwards; }
-.faces a { grid-area: 1 / 1; width: max(44px, min(20vw, 12dvh)); scale: .3; opacity: 0; visibility: hidden; transition: scale .3s var(--pop), opacity .2s, visibility 0s .3s; touch-action: manipulation; }
-.faces a.on { scale: 1; opacity: 1; visibility: visible; pointer-events: auto; transition-delay: .12s, .12s, 0s; }
-.faces a.on:active { scale: .9; transition-delay: 0s; }
+/* The swap: the one that leaves ducks down out of the window, then the other pops up from below. */
+.faces a { grid-area: 1 / 1; width: max(44px, min(20vw, 12dvh)); translate: 0 calc(100% + var(--bottom) + 16px); rotate: -12deg; visibility: hidden; transition: translate .26s cubic-bezier(.5, 0, .9, .4), rotate .26s ease-in, visibility 0s .26s; touch-action: manipulation; }
+.faces a.on { translate: 0 0; rotate: 0deg; visibility: visible; pointer-events: auto; transition: translate .5s var(--pop) .24s, rotate .5s var(--pop) .24s, scale .25s var(--pop), visibility 0s .24s; }
+.faces a.on:active { scale: .9; }
 .faces a:focus-visible { outline-color: #fff; }
 /* Upright phone: one above the other, corner to corner. */
 @media (max-aspect-ratio: 1/1) {
