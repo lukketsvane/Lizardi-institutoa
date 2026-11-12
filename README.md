@@ -7,7 +7,7 @@ The picture book *Lizarda and the World Within* and the PhD diary comic, as a sm
 - `diary/` – the comic: one long scroll
 - `about/` – Lucas and Ida: their faces, cut out of the diary, sit in a corner of the shelf and lead here
 
-There is no text or design of our own on the shelf, the book or the diary; the artwork is the interface. The page about the two of them shows what is written under `about` in `content.json`: their names, what they did (`role`) and a `text` each (a blank line starts a new paragraph).
+There is no text or design of our own on the shelf, the book or the diary; the artwork is the interface. The page about the two of them shows what is written under `about` in `content.json`: their names, what they did (`role`) and a `text` each (`\n\n` in it starts a new paragraph).
 
 The collage is the background of the shelf and the diary. The drawings land differently on every visit, and each one slides past at its own speed, so the pattern keeps changing: in the diary as the page scrolls, on the shelf (one screen that never scrolls) when you swipe across it. On the shelf they are in colour and hop when poked; in the diary they are in the comic's own purple.
 
@@ -32,7 +32,7 @@ To look at it locally:
 
 ## Changing the content
 
-The three HTML files, `manifest.webmanifest` and `sw.js` are generated. Edit `content.json`, then run:
+The four generated HTML files (`index.html`, `book/`, `diary/`, `about/`), `manifest.webmanifest` and `sw.js` come from the generator. Edit `content.json`, then run:
 
     python3 tools/build.py
 

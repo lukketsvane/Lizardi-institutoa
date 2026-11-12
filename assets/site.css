@@ -79,7 +79,7 @@ img { max-width: 100%; height: auto; -webkit-touch-callout: none; -webkit-user-s
 @keyframes arrive { from { opacity: 0; scale: .8; } }
 /* Lucas and Ida, small in a free corner: the way in to the page about them. */
 .faces { position: absolute; left: calc(var(--left) + 12px); bottom: calc(var(--bottom) + 10px); display: flex; align-items: flex-end; gap: 3px; pointer-events: auto; animation: arrive .5s var(--pop) .16s backwards; }
-.faces a { width: min(17vw, 10dvh); transition: scale .25s var(--pop); touch-action: manipulation; }
+.faces a { width: max(44px, min(17vw, 10dvh)); transition: scale .25s var(--pop); touch-action: manipulation; }
 .faces a:active { scale: .9; }
 .faces a:focus-visible { outline-color: #fff; }
 /* Upright phone: one above the other, corner to corner. */
@@ -88,6 +88,8 @@ img { max-width: 100%; height: auto; -webkit-touch-callout: none; -webkit-user-s
   .work { height: auto; width: min(60vw, 35dvh); }
   .work.book { align-self: flex-start; margin-left: calc(50% - min(60vw, 35dvh) * .76); }
   .work.diary { align-self: flex-end; margin-right: calc(50% - min(60vw, 35dvh) * .76); margin-top: -4%; }
+  .faces { left: calc(var(--left) + 8px); gap: 2px; } /* narrow enough to stay clear of the diary's corner */
+  .faces a { width: max(44px, min(14vw, 10dvh)); }
 }
 
 /* ---------- Controls: bare glyphs, no plates and no shadows ---------- */
@@ -189,12 +191,13 @@ img { max-width: 100%; height: auto; -webkit-touch-callout: none; -webkit-user-s
 /* ---------- About: the two of them, on the diary's paper ---------- */
 
 .about { background: var(--paper); color: var(--grape); font: 1.0625rem/1.5 ui-rounded, system-ui, sans-serif; }
-.about .back { position: fixed; z-index: 1; }
+.about .back { position: absolute; z-index: 1; } /* scrolls away with the page, so text never runs under it */
 .people { min-height: 100dvh; display: flex; flex-wrap: wrap; align-content: center; justify-content: center; gap: 10vmin; padding: calc(var(--top) + 56px) calc(var(--right) + 24px) calc(var(--bottom) + 48px) calc(var(--left) + 24px); }
-.person { width: min(100%, 320px); text-align: center; }
+.person { width: min(100%, 320px); text-align: center; overflow-wrap: anywhere; scroll-margin-top: calc(var(--top) + 56px); }
 .person img { width: min(64%, 32dvh); aspect-ratio: 4 / 5; margin-inline: auto; object-fit: contain; object-position: 50% 100%; }
 .person h2 { margin-top: 10px; font-size: 1.375rem; line-height: 1.25; text-wrap: balance; }
-.person p { margin: .7em 0 0; text-align: left; -webkit-user-select: text; user-select: text; }
+.person p { margin: .7em 0 0; text-align: left; }
+.person h2, .person p { -webkit-user-select: text; user-select: text; }
 .person .role { margin-top: 2px; text-align: center; opacity: .75; }
 
 @media (prefers-reduced-motion: reduce) {
