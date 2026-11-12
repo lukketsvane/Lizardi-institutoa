@@ -1,1 +1,31 @@
-/* The shelf, direction 2: laid over assets/site.css. */
+/* The shelf, direction 2: a specimen plate. Laid over assets/site.css; assets/v2/shelf.js works out the grid
+   for the window and places everything on it. */
+
+/* Nothing fades at the edges and nothing bobs: the drawings stand still in their cells until stirred or poked. */
+.v2 .wall::before, .v2 .wall::after { display: none; }
+.v2 .drawer { position: absolute; inset: 0; }
+.v2 .sprite {
+  left: 0; top: 0; transform-origin: 50% 100%; animation: none; scale: .5;
+  transition: opacity .45s ease-out calc(var(--i, 0) * 45ms), scale .6s var(--pop) calc(var(--i, 0) * 45ms);
+}
+.v2 .wall.ready .sprite { scale: 1; }
+.v2 .wall.settled .sprite { transition: scale .3s var(--pop); }
+.v2 .wall.settled .sprite.press { scale: .86; transition: scale .07s ease-out; }
+/* A hop is straight up and down, squashing on the line it stands on: no spin. */
+.v2 .sprite.hop { animation: plate-hop .66s var(--wait, 0s) both; }
+@keyframes plate-hop {
+  0% { transform: none; animation-timing-function: ease-out; }
+  15% { transform: scale(1.12, .84); animation-timing-function: cubic-bezier(.2, .7, .3, 1); }
+  48% { transform: translateY(var(--jump, -40px)) scale(.94, 1.08); animation-timing-function: cubic-bezier(.6, 0, .9, .4); }
+  72% { transform: scale(1.08, .9); animation-timing-function: ease-out; }
+  86% { transform: translateY(calc(var(--jump, -40px) * .12)) scale(.98, 1.02); animation-timing-function: ease-in; }
+  100% { transform: none; }
+}
+
+/* The book and the diary lie square, like the two largest specimens on the plate. */
+.v2 .work { rotate: none; box-shadow: 0 1px 0 rgb(0 0 0 / .18), 5px 7px 0 rgb(0 0 0 / .16); transition: scale .25s var(--pop), translate .3s var(--pop), box-shadow .3s var(--pop); }
+@media (hover: hover) { .v2 .work:hover { rotate: none; translate: 0 -3px; box-shadow: 0 1px 0 rgb(0 0 0 / .18), 7px 10px 0 rgb(0 0 0 / .16); } }
+/* Until the script has laid out the plate (or without it): side by side in the middle, upright phones too. */
+@media (max-aspect-ratio: 1/1) { .v2 .shelf { flex-direction: row; gap: 4vw; } .v2 .work { width: 44vw; } .v2 .work.book, .v2 .work.diary { margin: 0; align-self: center; } }
+.v2.plated .shelf { display: block; }
+.v2.plated .work { position: absolute; margin: 0; }
