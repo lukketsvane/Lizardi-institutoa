@@ -119,6 +119,8 @@ img { max-width: 100%; height: auto; -webkit-touch-callout: none; -webkit-user-s
 .chrome .ic, .chrome .progress { position: fixed; z-index: 2; }
 .back { top: calc(var(--top) + 4px); left: calc(var(--left) + 4px); }
 .back, .prev { color: var(--ink-l); }
+.prev, .next { transition: scale .2s var(--pop), opacity .6s, visibility 0s .6s; }
+.learnt .prev, .learnt .next { opacity: 0; visibility: hidden; pointer-events: none; } /* assets/book.js: the reader turns pages another way */
 .next { color: var(--ink-r); }
 .chrome .progress { height: 3px; pointer-events: none; }
 .chrome .progress::before, .chrome .progress i { content: ""; position: absolute; inset: 0; border-radius: 2px; background: linear-gradient(90deg, var(--ink-l) 50%, var(--ink-r) 0); }
@@ -138,6 +140,7 @@ img { max-width: 100%; height: auto; -webkit-touch-callout: none; -webkit-user-s
    above and below; the controls sit in those bands, off the artwork. */
 @media (max-aspect-ratio: 1/1) {
   .pages { --pw: min(100vw, var(--h) * var(--ar) / 2); padding-inline: calc((100vw - var(--pw)) / 2); }
+  .spread { background: none; } /* the bands are the window's own colour, which blends from page to page */
   .spread > img { width: calc(var(--pw) * 2); }
   .spread > i { scroll-snap-align: center; scroll-snap-stop: always; }
   .tint { display: block; }
