@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the four pages, the web-app manifest and the service worker.
+"""Generate the four pages (and the two trial shelves), the web-app manifest and the service worker.
 
     python3 tools/build.py
 
@@ -186,6 +186,47 @@ def home():
 """
 
 
+# ---------------------------------------------------------------- two directions for the shelf
+
+# /v1/ and /v2/ are temporary pages for comparing two ways of laying out the shelf, with the same book,
+# diary and faces behind them. Not linked from anywhere and kept out of search engines. Each has its own
+# stylesheet and script in assets/v1/ and assets/v2/, laid over assets/site.css.
+
+def shelf_variant(route, theme=GARDEN, cover_fill=0.9):
+    root = "../"
+    cover = BOOK["spreads"][0]["id"]
+    m = M["book"][cover]
+    first_page = {p["id"]: p for ch in DIARY["chapters"] for p in ch["pages"]}[DIARY["cover"]]
+    faces = "".join(f'<a{"" if i else ' class="on"'} href="{root}about/#{p["id"]}" aria-label="{e(p["name"])}">{face(p, root, "", "-200")}</a>'
+                    for i, p in enumerate(ABOUT["people"]))
+    tilting = ("bug", "poop", "lizard", "microbe")
+    sprites = [[name, M["sprites"][name]["w"], M["sprites"][name]["h"], int(kind in tilting), kind] for name, kind in SPRITES.items()]
+    collage = (f'<div class="wall" aria-hidden="true" data-stir data-src="{root}assets/sprites/" data-cover="{cover_fill}" '
+               f"data-sprites='{json.dumps(sprites, separators=(',', ':'))}'></div>")
+    page = head(SITE["name"], SITE["description"], root, theme).replace("</head>", '<meta name="robots" content="noindex">\n'
+           f'<link rel="stylesheet" href="{root}assets/{route}/shelf.css?v={V}">\n</head>')
+    return page + f"""<body class="home {route}">
+<h1 class="vh">{e(SITE["name"])}</h1>
+{collage}
+<main class="shelf">
+<a class="work book" href="{root}book/" aria-label="{e(BOOK["title"])}"><img src="{root}assets/book/{cover}-1280.webp" width="1280" height="{round(1280 * m["h"] / m["w"])}" alt="" fetchpriority="high"></a>
+<a class="work diary" href="{root}diary/" aria-label="{e(DIARY["title"])}">{page_picture(first_page, root, "(max-aspect-ratio: 1/1) 60vw, 31vw", eager=True, alt="")}</a>
+<nav class="faces" aria-label="{e(ABOUT["title"])}">{faces}</nav>
+</main>
+<script type="module" src="{root}assets/{route}/shelf.js?v={V}"></script>
+</body>
+</html>
+"""
+
+
+def shelf_v1():
+    return shelf_variant("v1")
+
+
+def shelf_v2():
+    return shelf_variant("v2")
+
+
 # ---------------------------------------------------------------- the picture book
 
 def book():
@@ -320,6 +361,7 @@ def service_worker():
 
 def main():
     outputs = {"index.html": home(), "book/index.html": book(), "diary/index.html": diary(), "about/index.html": about(),
+               "v1/index.html": shelf_v1(), "v2/index.html": shelf_v2(),
                "manifest.webmanifest": manifest(), "sw.js": service_worker()}
     for path, text in outputs.items():
         out = ROOT / path
