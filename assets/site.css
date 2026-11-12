@@ -149,9 +149,14 @@ img { max-width: 100%; height: auto; -webkit-touch-callout: none; -webkit-user-s
 
 /* ---------- The diary ---------- */
 
-.diary { --bg: #e9e2f0; background: var(--bg); } /* a shade under the comic's paper, so the pages stand out */
+/* The page itself is the diary's ink, which is what a phone's browser colours its own bars from (iOS 26
+   looks at the page's background and at a strip fixed to the bottom edge). The paper colour, a shade
+   under the comic's paper so the pages stand out, is laid over the whole window by the collage. */
+.diary { --bg: #e9e2f0; background: var(--grape); }
 /* Here the collage stays in the background: still, and in the diary's own purple. */
-.diary .wall { pointer-events: none; }
+.diary .wall { background: var(--bg); pointer-events: none; }
+.foot { position: fixed; z-index: 2; inset: auto 0 0; height: max(var(--bottom), 6px); background: var(--grape); pointer-events: none; }
+@media (pointer: fine) { .foot { display: none; } }
 .diary .sprite { animation: none; filter: grayscale(1) sepia(1) hue-rotate(225deg) saturate(3) contrast(.8) brightness(1.02); }
 
 .strip { position: relative; z-index: 1; max-width: 760px; margin-inline: auto; padding-bottom: calc(var(--bottom) + 30vh); touch-action: pan-y; }
