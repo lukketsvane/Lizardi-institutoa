@@ -23,7 +23,6 @@ ICON = {  # 24x24, drawn with a stroke
     "down": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg>',
     "prev": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
     "next": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
-    "scholar": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5zM6 11v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5M22 9v6"/></svg>',
     "chapters": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h5v5H5zM14 5h5v5h-5zM5 14h5v5H5zM14 14h5v5h-5z"/></svg>',
 }
 
@@ -157,10 +156,8 @@ def face(person, root, alt, size=""):
 
 
 def link_item(link):
-    """A link under a profile: its label, or just an icon (then it shares a row with the link after it)."""
-    if "icon" in link:
-        return f'<li class="mark"><a href="{e(link["url"])}" rel="noopener" aria-label="{e(link["label"])}">{ICON[link["icon"]]}</a></li>'
-    return f'<li><a href="{e(link["url"])}" rel="noopener">{e(link["label"])}</a></li>'
+    """A link under a profile. Short ones marked "row" share a line, spread out to its ends."""
+    return f'<li{" class=" + chr(34) + "row" + chr(34) if link.get("row") else ""}><a href="{e(link["url"])}" rel="noopener">{e(link["label"])}</a></li>'
 
 
 def spread_alt(s):
