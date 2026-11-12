@@ -166,21 +166,16 @@ def spread_alt(s):
 
 # ---------------------------------------------------------------- the shelf
 
+# The shelf lays itself out as one of the trial shelves (below), picked at random on every visit.
+SHELVES = ("v1", "v2")
+
+
 def home():
-    cover = BOOK["spreads"][0]["id"]
-    m = M["book"][cover]
-    first_page = {p["id"]: p for ch in DIARY["chapters"] for p in ch["pages"]}[DIARY["cover"]]
-    faces = "".join(f'<a{"" if i else ' class="on"'} href="about/#{p["id"]}" aria-label="{e(p["name"])}">{face(p, "", "", "-200")}</a>'
-                    for i, p in enumerate(ABOUT["people"]))  # the first one is the one that shows; assets/wall.js swaps them
-    return head(SITE["name"], SITE["description"], "", GARDEN) + f"""<body class="home">
-<h1 class="vh">{e(SITE["name"])}</h1>
-{wall("", 0.9, "data-stir")}
-<main class="shelf">
-<a class="work book" href="book/" aria-label="{e(BOOK["title"])}"><img src="assets/book/{cover}-1280.webp" width="1280" height="{round(1280 * m["h"] / m["w"])}" alt="" fetchpriority="high"></a>
-<a class="work diary" href="diary/" aria-label="{e(DIARY["title"])}">{page_picture(first_page, "", "(max-aspect-ratio: 1/1) 60vw, 31vw", eager=True, alt="")}</a>
-<nav class="faces" aria-label="{e(ABOUT["title"])}">{faces}</nav>
-</main>
-<script type="module" src="assets/wall.js?v={V}"></script>
+    styles = "".join(f'<link rel="stylesheet" href="assets/{route}/shelf.css?v={V}">\n' for route in SHELVES)
+    return head(SITE["name"], SITE["description"], "", GARDEN).replace("</head>", styles + "</head>") + f"""<body class="home">
+<script>document.body.classList.add(document.body.dataset.shelf = {json.dumps(list(SHELVES))}[Math.random() * {len(SHELVES)} | 0]);</script>
+{shelf_body("")}
+<script type="module">import(`./assets/${{document.body.dataset.shelf}}/shelf.js?v={V}`);</script>
 </body>
 </html>
 """
@@ -188,31 +183,34 @@ def home():
 
 # ---------------------------------------------------------------- two directions for the shelf
 
-# /v1/ and /v2/ are temporary pages for comparing two ways of laying out the shelf, with the same book,
-# diary and faces behind them. Not linked from anywhere and kept out of search engines. Each has its own
+# /v1/ and /v2/ are two ways of laying out the shelf, each on a page of its own for comparing them, with the
+# same book, diary and faces behind them; the shelf itself shows one of them at random. Not linked from anywhere and kept out of search engines. Each has its own
 # stylesheet and script in assets/v1/ and assets/v2/, laid over assets/site.css.
 
-def shelf_variant(route, theme=GARDEN, cover_fill=0.9):
-    root = "../"
+def shelf_body(root, cover_fill=0.9):
+    """The book, the diary, one face and the collage; each trial shelf's script lays them out."""
     cover = BOOK["spreads"][0]["id"]
     m = M["book"][cover]
     first_page = {p["id"]: p for ch in DIARY["chapters"] for p in ch["pages"]}[DIARY["cover"]]
     faces = "".join(f'<a{"" if i else ' class="on"'} href="{root}about/#{p["id"]}" aria-label="{e(p["name"])}">{face(p, root, "", "-200")}</a>'
-                    for i, p in enumerate(ABOUT["people"]))
+                    for i, p in enumerate(ABOUT["people"]))  # the first one is the one that shows; the script swaps them
     tilting = ("bug", "poop", "lizard", "microbe")
     sprites = [[name, M["sprites"][name]["w"], M["sprites"][name]["h"], int(kind in tilting), kind] for name, kind in SPRITES.items()]
-    collage = (f'<div class="wall" aria-hidden="true" data-stir data-src="{root}assets/sprites/" data-cover="{cover_fill}" '
-               f"data-sprites='{json.dumps(sprites, separators=(',', ':'))}'></div>")
-    page = head(SITE["name"], SITE["description"], root, theme).replace("</head>", '<meta name="robots" content="noindex">\n'
-           f'<link rel="stylesheet" href="{root}assets/{route}/shelf.css?v={V}">\n</head>')
-    return page + f"""<body class="home {route}">
-<h1 class="vh">{e(SITE["name"])}</h1>
-{collage}
+    return f"""<h1 class="vh">{e(SITE["name"])}</h1>
+<div class="wall" aria-hidden="true" data-stir data-src="{root}assets/sprites/" data-cover="{cover_fill}" data-sprites='{json.dumps(sprites, separators=(',', ':'))}'></div>
 <main class="shelf">
 <a class="work book" href="{root}book/" aria-label="{e(BOOK["title"])}"><img src="{root}assets/book/{cover}-1280.webp" width="1280" height="{round(1280 * m["h"] / m["w"])}" alt="" fetchpriority="high"></a>
 <a class="work diary" href="{root}diary/" aria-label="{e(DIARY["title"])}">{page_picture(first_page, root, "(max-aspect-ratio: 1/1) 60vw, 31vw", eager=True, alt="")}</a>
 <nav class="faces" aria-label="{e(ABOUT["title"])}">{faces}</nav>
-</main>
+</main>"""
+
+
+def shelf_variant(route, theme=GARDEN):
+    root = "../"
+    page = head(SITE["name"], SITE["description"], root, theme).replace("</head>", '<meta name="robots" content="noindex">\n'
+           f'<link rel="stylesheet" href="{root}assets/{route}/shelf.css?v={V}">\n</head>')
+    return page + f"""<body class="home {route}">
+{shelf_body(root)}
 <script type="module" src="{root}assets/{route}/shelf.js?v={V}"></script>
 </body>
 </html>
@@ -355,6 +353,7 @@ def manifest():
 def service_worker():
     shell = ["./", "book/", "diary/", "about/", "manifest.webmanifest", "assets/icons/icon-192.png",
              *(f"assets/{name}?v={V}" for name in ("site.css", "wall.js", "book.js", "diary.js")),
+             *(f"assets/{route}/shelf.{ext}?v={V}" for route in SHELVES for ext in ("css", "js")),
              *(f"assets/faces/{p['id']}{size}.webp" for p in ABOUT["people"] for size in ("", "-200"))]
     return SERVICE_WORKER.replace("VERSION", V).replace("FILES", json.dumps(shell))
 

@@ -2,7 +2,8 @@
 
 The picture book *Lizarda and the World Within* and the PhD diary comic, as a small web app that can be added to the home screen.
 
-- `index.html` – the shelf: the book and the diary lying on a collage of the cut-out drawings
+- `index.html` – the shelf: the book and the diary lying on a collage of the cut-out drawings, laid out one of two ways, picked at random on every visit
+- `v1/`, `v2/` – those two ways, each on a page of its own for comparing them (not linked, not indexed); their styles and scripts are in `assets/v1/` and `assets/v2/`
 - `book/` – the picture book: one page at a time on a phone held upright, one spread at a time otherwise
 - `diary/` – the comic: one long scroll
 - `about/` – Lucas and Ida: one of their faces, cut out of the diary, looks out from a corner of the shelf and leads here (Lucas mostly; stirring the collage brings Ida now and then)
@@ -32,7 +33,7 @@ To look at it locally:
 
 ## Changing the content
 
-The four generated HTML files (`index.html`, `book/`, `diary/`, `about/`), `manifest.webmanifest` and `sw.js` come from the generator. Edit `content.json`, then run:
+The generated HTML files (`index.html`, `book/`, `diary/`, `about/`, `v1/`, `v2/`), `manifest.webmanifest` and `sw.js` come from the generator. Edit `content.json`, then run:
 
     python3 tools/build.py
 
