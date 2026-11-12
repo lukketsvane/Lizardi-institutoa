@@ -30,7 +30,7 @@ PAGE_AVIF_WIDTHS = (800, 1200, 1600)  # 2x phones and plain desktops, 3x phones,
 PAGE_WEBP_WIDTH = 1000  # fallback for browsers without AVIF
 PAGE_THUMB_WIDTH = 240  # chapter picker
 FACE_SMALL_WIDTH = 200  # on the shelf
-ICON_SPRITE, ICON_COLOUR = "lizard-stretching", "#8d76ad"  # Lizarda, on the lilac of her wall
+ICON_SPRITE, ICON_COLOUR = "poop-large-brown", "#8d76ad"  # what it is all about, on the lilac of Lizarda's wall
 SHELF_COLOUR = "#9da94a"  # the shelf's background (--garden in assets/site.css)
 # iPhone screens as width, height and pixel ratio: SE/8, 8 Plus, X/11 Pro/mini, XR/11, XS Max/11 Pro Max,
 # 12-14, 12-14 Pro Max/Plus, 14 Pro-16, 14 Pro Max-16 Plus, 16 Pro/17, 16-17 Pro Max, Air.
@@ -139,10 +139,14 @@ def faces(src_dir, meta):
 def icons(sprite_dir):
     """Home-screen icons and the favicon: one drawing centred on one colour."""
     art = cutout(sprite_dir / f"{ICON_SPRITE}.png")
+    # Without the specks of crayon around the drawing, which would push it off centre.
+    body = art.getchannel("A").point(lambda a: 255 if a > 110 else 0).filter(ImageFilter.MinFilter(9)).filter(ImageFilter.MaxFilter(25))
+    art.putalpha(ImageChops.multiply(art.getchannel("A"), body))
+    art = art.crop(art.getbbox())
 
     def icon(size, margin):
-        figure = art.copy()
-        figure.thumbnail((round(size * (1 - 2 * margin)),) * 2, Image.LANCZOS)
+        scale = size * (1 - 2 * margin) / max(art.size)  # fills the space, also when the drawing is a small one
+        figure = art.resize((round(art.width * scale), round(art.height * scale)), Image.LANCZOS)
         im = Image.new("RGBA", (size, size), ICON_COLOUR)
         im.alpha_composite(figure, ((size - figure.width) // 2, (size - figure.height) // 2))
         return im.convert("RGB")
