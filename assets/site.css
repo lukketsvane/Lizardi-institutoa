@@ -207,14 +207,10 @@ img { max-width: 100%; height: auto; -webkit-touch-callout: none; -webkit-user-s
 .person p { margin: .7em 0 0; text-align: left; }
 .person h2, .person p { -webkit-user-select: text; user-select: text; }
 .person .role { margin-top: 2px; text-align: center; opacity: .75; }
-.links { margin: .9em 0 0; padding: 0; list-style: none; text-align: left; font-size: .9375rem; line-height: 1.35; }
-.links li + li { margin-top: .6em; }
+.links { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .6em 1em; margin: .9em 0 0; padding: 0; list-style: none; text-align: left; font-size: .9375rem; line-height: 1.35; }
+.links li { flex: 0 0 100%; }
+.links .row { flex: none; } /* short links share a line, pushed to its two ends */
 .links a { color: inherit; text-underline-offset: 2px; }
-/* A link shown as an icon sits in front of the next link, on the same row. */
-.links .mark { float: left; margin: -.25em .5em 0 0; }
-.links .mark + li { margin-top: 0; }
-.links .mark a { display: block; }
-.links svg { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after, ::backdrop { animation: none !important; transition-duration: .01s !important; }
