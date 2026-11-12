@@ -450,11 +450,12 @@
     "links": [
      {
       "label": "Google Scholar",
-      "icon": "scholar",
+      "row": true,
       "url": "https://scholar.google.com/citations?user=CIeamYsAAAAJ"
      },
      {
-      "label": "Alberdi group, University of Copenhagen",
+      "label": "AlberdiLab",
+      "row": true,
       "url": "https://www.alberdilab.dk/members.html"
      },
      {
