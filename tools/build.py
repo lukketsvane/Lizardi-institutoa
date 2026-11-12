@@ -165,7 +165,7 @@ def home():
     cover = BOOK["spreads"][0]["id"]
     m = M["book"][cover]
     first_page = {p["id"]: p for ch in DIARY["chapters"] for p in ch["pages"]}[DIARY["cover"]]
-    faces = "".join(f'<a href="about/#{p["id"]}">{face(p, "", p["name"], "-200")}</a>' for p in ABOUT["people"])
+    faces = "".join(f'<a href="about/#{p["id"]}" aria-label="{e(p["name"])}">{face(p, "", "", "-200")}</a>' for p in ABOUT["people"])
     return head(SITE["name"], SITE["description"], "", GARDEN) + f"""<body class="home">
 <h1 class="vh">{e(SITE["name"])}</h1>
 {wall("", 0.9, "data-stir")}
@@ -269,6 +269,17 @@ def about():
 <main class="people">
 {people}
 </main>
+<script>
+// Back to the shelf, as in the book and the diary: step back in history when the shelf is where we came from.
+document.querySelector(".back").addEventListener("click", event => {{
+  const shelf = new URL("../", location.href).href;
+  if (document.referrer !== shelf || history.length < 2) return;
+  event.preventDefault();
+  history.back();
+  const leaving = setTimeout(() => {{ location.href = shelf; }}, 400);
+  addEventListener("pagehide", () => clearTimeout(leaving));
+}});
+</script>
 </body>
 </html>
 """
@@ -293,7 +304,8 @@ def manifest():
 
 def service_worker():
     shell = ["./", "book/", "diary/", "about/", "manifest.webmanifest", "assets/icons/icon-192.png",
-             *(f"assets/{name}?v={V}" for name in ("site.css", "wall.js", "book.js", "diary.js"))]
+             *(f"assets/{name}?v={V}" for name in ("site.css", "wall.js", "book.js", "diary.js")),
+             *(f"assets/faces/{p['id']}{size}.webp" for p in ABOUT["people"] for size in ("", "-200"))]
     return SERVICE_WORKER.replace("VERSION", V).replace("FILES", json.dumps(shell))
 
 

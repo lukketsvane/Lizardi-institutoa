@@ -30,7 +30,7 @@
 <meta property="og:description" content="A picture book and a comic diary about lizards, their poop, and the tiny worlds that live inside of us all.">
 <meta property="og:image" content="https://lizardi-institutoa.iverfinne.no/assets/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="../assets/site.css?v=4399a570af">
+<link rel="stylesheet" href="../assets/site.css?v=48772e0811">
 <script>
 if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("../sw.js"));
 addEventListener("gesturestart", event => event.preventDefault()); // no pinch-zoom in Safari: it is an app
@@ -44,5 +44,16 @@ addEventListener("touchstart", () => {}, {passive: true}); // lets iOS show the 
 <section class="person" id="lucas"><img src="../assets/faces/lucas.webp" width="638" height="798" alt="" decoding="async"><h2>Lucas Padilha</h2><p class="role">Research</p></section>
 <section class="person" id="ida"><img src="../assets/faces/ida.webp" width="640" height="667" alt="" decoding="async"><h2>Ida Eva Smiseth Neverdahl</h2><p class="role">Drawings</p></section>
 </main>
+<script>
+// Back to the shelf, as in the book and the diary: step back in history when the shelf is where we came from.
+document.querySelector(".back").addEventListener("click", event => {
+  const shelf = new URL("../", location.href).href;
+  if (document.referrer !== shelf || history.length < 2) return;
+  event.preventDefault();
+  history.back();
+  const leaving = setTimeout(() => { location.href = shelf; }, 400);
+  addEventListener("pagehide", () => clearTimeout(leaving));
+});
+</script>
 </body>
 </html>
