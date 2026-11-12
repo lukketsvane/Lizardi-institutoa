@@ -252,6 +252,7 @@ def diary():
 <main class="strip">
 {chr(10).join(sections)}
 </main>
+<i class="foot"></i>
 <dialog class="sheet" aria-label="Chapters">
 <div class="grab"></div>
 <ol class="thumbs">{"".join(thumbs)}</ol>
