@@ -77,10 +77,12 @@ img { max-width: 100%; height: auto; -webkit-touch-callout: none; -webkit-user-s
 .work:focus-visible { outline-color: #fff; }
 @media (hover: hover) { .work:hover { rotate: 0deg; } }
 @keyframes arrive { from { opacity: 0; scale: .8; } }
-/* Lucas and Ida, small in a free corner: the way in to the page about them. */
-.faces { position: absolute; left: calc(var(--left) + 12px); bottom: calc(var(--bottom) + 10px); display: flex; align-items: flex-end; gap: 3px; pointer-events: auto; animation: arrive .5s var(--pop) .16s backwards; }
-.faces a { width: max(44px, min(17vw, 10dvh)); transition: scale .25s var(--pop); touch-action: manipulation; }
-.faces a:active { scale: .9; }
+/* One of them looks out from a free corner: the way in to the page about them. Mostly Lucas;
+   now and then, as the collage is stirred, Ida takes his place (assets/wall.js). */
+.faces { position: absolute; left: calc(var(--left) + 12px); bottom: calc(var(--bottom) + 10px); display: grid; align-items: end; animation: arrive .5s var(--pop) .16s backwards; }
+.faces a { grid-area: 1 / 1; width: max(44px, min(20vw, 12dvh)); scale: .3; opacity: 0; visibility: hidden; transition: scale .3s var(--pop), opacity .2s, visibility 0s .3s; touch-action: manipulation; }
+.faces a.on { scale: 1; opacity: 1; visibility: visible; pointer-events: auto; transition-delay: .12s, .12s, 0s; }
+.faces a.on:active { scale: .9; transition-delay: 0s; }
 .faces a:focus-visible { outline-color: #fff; }
 /* Upright phone: one above the other, corner to corner. */
 @media (max-aspect-ratio: 1/1) {
@@ -88,8 +90,6 @@ img { max-width: 100%; height: auto; -webkit-touch-callout: none; -webkit-user-s
   .work { height: auto; width: min(60vw, 35dvh); }
   .work.book { align-self: flex-start; margin-left: calc(50% - min(60vw, 35dvh) * .76); }
   .work.diary { align-self: flex-end; margin-right: calc(50% - min(60vw, 35dvh) * .76); margin-top: -4%; }
-  .faces { left: calc(var(--left) + 8px); gap: 2px; } /* narrow enough to stay clear of the diary's corner */
-  .faces a { width: max(44px, min(14vw, 10dvh)); }
 }
 
 /* ---------- Controls: bare glyphs, no plates and no shadows ---------- */
@@ -199,6 +199,9 @@ img { max-width: 100%; height: auto; -webkit-touch-callout: none; -webkit-user-s
 .person p { margin: .7em 0 0; text-align: left; }
 .person h2, .person p { -webkit-user-select: text; user-select: text; }
 .person .role { margin-top: 2px; text-align: center; opacity: .75; }
+.links { margin: .9em 0 0; padding: 0; list-style: none; text-align: left; font-size: .9375rem; line-height: 1.35; }
+.links li + li { margin-top: .6em; }
+.links a { color: inherit; text-underline-offset: 2px; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after, ::backdrop { animation: none !important; transition-duration: .01s !important; }

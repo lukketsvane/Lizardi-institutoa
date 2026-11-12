@@ -165,7 +165,8 @@ def home():
     cover = BOOK["spreads"][0]["id"]
     m = M["book"][cover]
     first_page = {p["id"]: p for ch in DIARY["chapters"] for p in ch["pages"]}[DIARY["cover"]]
-    faces = "".join(f'<a href="about/#{p["id"]}" aria-label="{e(p["name"])}">{face(p, "", "", "-200")}</a>' for p in ABOUT["people"])
+    faces = "".join(f'<a{"" if i else ' class="on"'} href="about/#{p["id"]}" aria-label="{e(p["name"])}">{face(p, "", "", "-200")}</a>'
+                    for i, p in enumerate(ABOUT["people"]))  # the first one is the one that shows; assets/wall.js swaps them
     return head(SITE["name"], SITE["description"], "", GARDEN) + f"""<body class="home">
 <h1 class="vh">{e(SITE["name"])}</h1>
 {wall("", 0.9, "data-stir")}
@@ -260,7 +261,9 @@ def diary():
 def about():
     people = "\n".join(
         f'<section class="person" id="{p["id"]}">{face(p, "../", "")}<h2>{e(p["name"])}</h2><p class="role">{e(p["role"])}</p>'
-        + "".join(f"<p>{e(par)}</p>" for par in p["text"].split("\n\n") if par) + "</section>"
+        + "".join(f"<p>{e(par)}</p>" for par in p["text"].split("\n\n") if par)
+        + ('<ul class="links">' + "".join(f'<li><a href="{e(link["url"])}" rel="noopener">{e(link["label"])}</a></li>' for link in p["links"]) + "</ul>"
+           if p.get("links") else "") + "</section>"
         for p in ABOUT["people"]
     )
     return head(f'{ABOUT["title"]} · {SITE["name"]}', SITE["description"], "../", PAPER) + f"""<body class="about">
