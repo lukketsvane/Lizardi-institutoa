@@ -1,22 +1,20 @@
 /* The shelf, direction 2: friezes. Laid over assets/site.css.
    The book and the diary stand side by side, straight, in the calm middle of the screen. The drawings
-   walk in rows above and below them, like the borders of a printed page: assets/v2/shelf.js. */
+   walk in rows above and below them, and on a wide screen beside them too, like the borders of a printed
+   page: assets/v2/shelf.js, which also sizes the works (--wh) and puts them in their place (--works-top). */
 
 .v2 {
   --side: max(16px, 4.6vw); /* the margin at either side, which the rows and (on a phone) the works share */
   --gap: clamp(14px, 4vw, 60px); /* between the book and the diary */
-  /* The works' height: the book is .7077 of it wide and the diary .7727, so both fit the width with the gap. */
+  /* Until the script has measured: the works' height, the book .7077 of it wide and the diary .7727. */
   --fit: calc((100vw - var(--left) - var(--right) - 2 * var(--side) - var(--gap)) / 1.4804);
   --wh: min(var(--fit), 40dvh);
 }
-@media (min-aspect-ratio: 1/1) { .v2 { --wh: min(var(--fit), 44dvh); } }
-@media (min-aspect-ratio: 1/1) and (max-height: 520px) { .v2 { --wh: min(var(--fit), 50dvh); } }
+@media (min-aspect-ratio: 13/12) { .v2 { --wh: min(var(--fit) * .62, 62dvh); } }
 
 /* No fades at the top and bottom: every row stands whole inside the window. */
 .v2 .wall::before, .v2 .wall::after { content: none; }
 
-/* The works stand at the top of the shelf, pushed down to their place in the column of rows by
-   assets/v2/shelf.js (--works-top); until then, a little above the middle. */
 .v2 .shelf { flex-direction: row; align-items: flex-start; gap: var(--gap); }
 .v2 .work, .v2 .work.book, .v2 .work.diary { height: var(--wh); width: auto; margin: var(--works-top, calc((100dvh - var(--top) - var(--wh)) * .44)) 0 0; align-self: flex-start; rotate: none; }
 .v2 .work { box-shadow: 0 1px 0 rgb(0 0 0 / .16), 5px 7px 0 rgb(0 0 0 / .15); transition: scale .25s var(--pop), translate .3s var(--pop), box-shadow .3s; }
@@ -24,19 +22,20 @@
   .v2 .work:hover { rotate: none; translate: 0 -4px; box-shadow: 0 1px 0 rgb(0 0 0 / .16), 6px 11px 0 rgb(0 0 0 / .13); }
 }
 
-/* The face stands at the start of the garden, on the bottom edge like the plants (assets/v2/shelf.js sets --face). */
-.v2 .faces { left: calc(var(--left) + var(--side)); bottom: 0; --face: max(48px, min(18vw, 11dvh)); }
+/* The face stands at the start of the garden, on the ground like the plants: the bottom edge, or just above
+   the home indicator (assets/v2/shelf.js sets --face and --ground). */
+.v2 .faces { left: calc(var(--left) + var(--side)); bottom: var(--ground, var(--bottom)); --face: max(48px, min(18vw, 11dvh)); }
 
 /* ---------- The rows ---------- */
 
-/* A row is a baseline (its bottom edge); its drawings stand on it. The script moves the row down to its
-   place and slides each drawing along it with translate; rotate leans it while it moves, and the
-   transform turns it to look the way the row walks (--fx) or stands it on its tail (--fy, --up). */
+/* A row is a baseline (its bottom edge); its drawings stand on it, the fliers hover a little above it
+   (bottom). The script moves the row down to its place and slides each drawing along it with translate;
+   rotate leans it while it moves, and the transform turns it to look the way the row goes (--fx). */
 .v2 .row { position: absolute; top: 0; left: 0; width: 100%; pointer-events: none; }
 .v2 .fig {
   position: absolute; left: 0; bottom: 0; max-width: none; pointer-events: auto; cursor: pointer; touch-action: manipulation; will-change: translate;
   transform-origin: 50% 100%;
-  transform: translateY(var(--up, 0px)) translateY(0px) rotate(0deg) scale(var(--fx, 1), var(--fy, 1));
+  transform: translateY(0px) rotate(0deg) scale(var(--fx, 1), 1);
   opacity: 0; scale: .2;
   transition: opacity .3s var(--delay, 0s), scale .6s var(--pop) var(--delay, 0s);
 }
@@ -46,10 +45,10 @@
 .v2 .wall.settled .fig.press { scale: .86; transition: scale .07s ease-out; }
 .v2 .fig.hop { animation: v2-hop .72s var(--wait, 0s) both; }
 @keyframes v2-hop {
-  0% { transform: translateY(var(--up, 0px)) translateY(0px) rotate(0deg) scale(var(--fx, 1), var(--fy, 1)); animation-timing-function: ease-out; }
-  16% { transform: translateY(var(--up, 0px)) translateY(3px) rotate(0deg) scale(calc(var(--fx, 1) * 1.14), calc(var(--fy, 1) * .82)); animation-timing-function: cubic-bezier(.2, .7, .3, 1); }
-  48% { transform: translateY(var(--up, 0px)) translateY(var(--jump, -40px)) rotate(var(--kick, 6deg)) scale(calc(var(--fx, 1) * .92), calc(var(--fy, 1) * 1.1)); animation-timing-function: cubic-bezier(.6, 0, .9, .4); }
-  72% { transform: translateY(var(--up, 0px)) translateY(2px) rotate(0deg) scale(calc(var(--fx, 1) * 1.1), calc(var(--fy, 1) * .9)); animation-timing-function: ease-out; }
-  86% { transform: translateY(var(--up, 0px)) translateY(-5px) rotate(0deg) scale(calc(var(--fx, 1) * .98), calc(var(--fy, 1) * 1.03)); animation-timing-function: ease-in; }
-  100% { transform: translateY(var(--up, 0px)) translateY(0px) rotate(0deg) scale(var(--fx, 1), var(--fy, 1)); }
+  0% { transform: translateY(0px) rotate(0deg) scale(var(--fx, 1), 1); animation-timing-function: ease-out; }
+  16% { transform: translateY(3px) rotate(0deg) scale(calc(var(--fx, 1) * 1.14), .82); animation-timing-function: cubic-bezier(.2, .7, .3, 1); }
+  48% { transform: translateY(var(--jump, -40px)) rotate(var(--kick, 6deg)) scale(calc(var(--fx, 1) * .92), 1.1); animation-timing-function: cubic-bezier(.6, 0, .9, .4); }
+  72% { transform: translateY(2px) rotate(0deg) scale(calc(var(--fx, 1) * 1.1), .9); animation-timing-function: ease-out; }
+  86% { transform: translateY(-5px) rotate(0deg) scale(calc(var(--fx, 1) * .98), 1.03); animation-timing-function: ease-in; }
+  100% { transform: translateY(0px) rotate(0deg) scale(var(--fx, 1), 1); }
 }
